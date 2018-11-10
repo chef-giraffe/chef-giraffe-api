@@ -3,7 +3,6 @@ package com.chefgiraffe.api.services.impl;
 import com.chefgiraffe.api.repositories.ItemRepository;
 import com.chefgiraffe.api.repositories.OrderRepository;
 import com.chefgiraffe.api.repositories.TableRepository;
-import com.chefgiraffe.api.repositories.models.Item;
 import com.chefgiraffe.api.repositories.models.Order;
 import com.chefgiraffe.api.repositories.models.OrderStatus;
 import com.chefgiraffe.api.repositories.models.Table;
