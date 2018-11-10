@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OrderServiceImplIT {
+public class RestaurantOrderServiceImplIT {
 
     @Autowired
     private OrderService orderService;

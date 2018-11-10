@@ -1,8 +1,9 @@
 package com.chefgiraffe.api.repositories.models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
@@ -10,10 +11,11 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Item {
+public class MenuItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
     private String name;
@@ -21,10 +23,10 @@ public class Item {
     private BigDecimal price;
     private String imageUri;
 
-    protected Item() {
+    protected MenuItem() {
     }
 
-    public Item(String name, String description, BigDecimal price, String imageUri) {
+    public MenuItem(String name, String description, BigDecimal price, String imageUri) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -53,7 +55,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
+        return "MenuItem{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

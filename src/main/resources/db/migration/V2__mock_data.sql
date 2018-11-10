@@ -1,4 +1,4 @@
-insert into `table`(id, friendlyname, availableseats)
+insert into restaurant_table(id, friendly_name, available_seats)
 values ('127e65d0-13a0-4be2-9b5a-ed0635b9c5ce','table 0',5),
        ('9ace77d1-fdc2-4272-9106-a5ce2cd96cc9','table 1',5),
        ('fcff4911-1b2a-42e6-8590-e6cbecee2675','table 2',5),

@@ -1,45 +1,32 @@
 -- table creates
-create table orderstatus
-(
-    id smallint primary key not null,
-    status varchar(25) not null
-);
-
-create table `table`
+create table restaurant_table
 (
     id uuid primary key not null,
-    friendlyname varchar(50) not null,
-    availableseats integer not null
+    friendly_name varchar(50) not null,
+    available_seats integer not null
 );
 
-create table item
+create table menu_item
 (
     id uuid primary key not null,
     name varchar(50) not null,
     description varchar(255) not null,
     price decimal not null,
-    imageuri varchar(255) null
+    image_uri varchar(255) null
 );
 
-create table `order`
+create table restaurant_order
 (
     id uuid primary key not null,
-    tableid uuid not null,
-    orderstatusid smallint not null,
-    foreign key (tableid) references `table`(id),
-    foreign key (orderstatusid) references orderstatus(id)
+    restaurant_table_id uuid not null,
+    order_status varchar(50) not null,
+    foreign key (restaurant_table_id) references restaurant_table(id)
 );
 
-create table orderitem
+create table restaurant_order_item
 (
-    orderid uuid not null,
-    itemid uuid not null,
-    foreign key (orderid) references `order`(id),
-    foreign key (itemid) references item(id)
+    restaurant_order_id uuid not null,
+    menu_item_id uuid not null,
+    foreign key (restaurant_order_id) references restaurant_order(id),
+    foreign key (menu_item_id) references menu_item(id)
 );
-
--- table inserts
-insert into orderstatus(id, status)
-values (0, 'CREATED'),
-       (1, 'PREPARING'),
-       (2, 'FULFILLED');

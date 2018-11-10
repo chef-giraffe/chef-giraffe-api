@@ -1,6 +1,6 @@
 package com.chefgiraffe.api.controllers;
 
-import com.chefgiraffe.api.repositories.models.Item;
+import com.chefgiraffe.api.repositories.models.MenuItem;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,14 +14,14 @@ import java.util.UUID;
 @Controller
 public class ItemController {
     @GetMapping("/items")
-    public ResponseEntity<List<Item>> getAllItems() {
-        List<Item> menu = Collections.singletonList(new Item(null, null, null, null));
-        return new ResponseEntity<List<Item>>(menu, HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<List<MenuItem>> getAllItems() {
+        List<MenuItem> menu = Collections.singletonList(new MenuItem(null, null, null, null));
+        return new ResponseEntity<List<MenuItem>>(menu, HttpStatus.NOT_IMPLEMENTED);
 
     }
 
     @GetMapping("/item/{id}")
-    public ResponseEntity<Item> getItem(@PathVariable("id") UUID id) {
-        return new ResponseEntity<Item>(new Item(null, null, null, null), HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<MenuItem> getItem(@PathVariable("id") UUID id) {
+        return new ResponseEntity<MenuItem>(new MenuItem(null, null, null, null), HttpStatus.NOT_IMPLEMENTED);
     }
 }
