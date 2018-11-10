@@ -45,6 +45,10 @@ public class Order {
         return id;
     }
 
+    public UUID getTableId() {
+        return tableId;
+    }
+
     public List<Item> getItems() {
         return items;
     }
@@ -59,7 +63,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "CreatedOrder{" +
                 "id=" + id +
                 ", items=" + items +
                 ", orderStatus=" + orderStatus +
