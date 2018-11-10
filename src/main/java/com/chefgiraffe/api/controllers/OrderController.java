@@ -5,6 +5,7 @@ import com.chefgiraffe.api.controllers.models.OrderStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,12 +16,12 @@ import java.util.List;
 public class OrderController {
 
     @GetMapping("/order/{id}")
-    public Order getOrder(String id) {
+    public ResponseEntity<Order> getOrder(@PathVariable("id") String id) {
         return null;
     }
 
     @GetMapping("/order/active")
-    public List<Order> activeOrders() {
+    public ResponseEntity<List<Order>> activeOrders() {
         return null;
     }
 
@@ -32,4 +33,6 @@ public class OrderController {
                 .pathSegment("v1", "order", orderObject.getId().toString()).build(true);
         return ResponseEntity.created(builder.toUri()).build();
     }
+
+
 }
