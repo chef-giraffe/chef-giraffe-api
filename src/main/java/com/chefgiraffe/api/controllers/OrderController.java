@@ -1,6 +1,7 @@
 package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Order;
+import com.chefgiraffe.api.controllers.models.OrderStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,8 @@ public class OrderController {
 
     @PostMapping("/order")
     public ResponseEntity<Object> createId(Order order) {
-        com.chefgiraffe.api.repository.models.Order orderObject = new com.chefgiraffe.api.repository.models.Order();
+        com.chefgiraffe.api.repositories.models.Order orderObject = new com.chefgiraffe.api.repositories.models.Order(order.getTableId(),
+                new com.chefgiraffe.api.repositories.models.OrderStatus(OrderStatus.CREATED.toString()));
         UriComponents builder = UriComponentsBuilder.fromUriString("")
                 .pathSegment("v1", "order", orderObject.getId().toString()).build(true);
         return ResponseEntity.created(builder.toUri()).build();
