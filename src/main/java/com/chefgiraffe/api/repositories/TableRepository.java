@@ -1,6 +1,6 @@
-package com.chefgiraffe.api.repository;
+package com.chefgiraffe.api.repositories;
 
-import com.chefgiraffe.api.repository.models.Table;
+import com.chefgiraffe.api.repositories.models.Table;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

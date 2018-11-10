@@ -1,23 +1,27 @@
-package com.chefgiraffe.api.repository.models;
+package com.chefgiraffe.api.repositories.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
+@Table
 public class Item {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
+
     private String name;
     private String description;
     private BigDecimal price;
     private String imageUri;
 
-    public Item() {
+    protected Item() {
     }
 
     public Item(String name, String description, BigDecimal price, String imageUri) {
@@ -31,42 +35,21 @@ public class Item {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public String getImageUri() {
         return imageUri;
     }
-
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
-
 
     @Override
     public String toString() {

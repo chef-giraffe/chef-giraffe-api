@@ -1,20 +1,22 @@
-package com.chefgiraffe.api.repository.models;
+package com.chefgiraffe.api.repositories.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.UUID;
 
 @Entity
+@javax.persistence.Table
 public class Table {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     private String friendlyName;
     private Integer availableSeats;
 
-    public Table() {
+    protected Table() {
     }
 
     public Table(String friendlyName, Integer availableSeats) {
@@ -26,24 +28,12 @@ public class Table {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public String getFriendlyName() {
         return friendlyName;
     }
 
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-    }
-
     public Integer getAvailableSeats() {
         return availableSeats;
-    }
-
-    public void setAvailableSeats(Integer availableSeats) {
-        this.availableSeats = availableSeats;
     }
 
     @Override
