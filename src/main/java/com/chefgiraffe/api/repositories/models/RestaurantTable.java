@@ -1,31 +1,41 @@
 package com.chefgiraffe.api.repositories.models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@javax.persistence.Table
-public class Table {
+@Table
+public class RestaurantTable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
+
+    private UUID restaurantId;
     private String friendlyName;
     private Integer availableSeats;
 
-    protected Table() {
+    protected RestaurantTable() {
     }
 
-    public Table(String friendlyName, Integer availableSeats) {
+    public RestaurantTable(UUID restaurantId, String friendlyName, Integer availableSeats) {
+        this.restaurantId = restaurantId;
         this.friendlyName = friendlyName;
         this.availableSeats = availableSeats;
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public UUID getRestaurantId() {
+        return restaurantId;
     }
 
     public String getFriendlyName() {
@@ -38,8 +48,9 @@ public class Table {
 
     @Override
     public String toString() {
-        return "Table{" +
+        return "RestaurantTable{" +
                 "id=" + id +
+                ", restaurantId=" + restaurantId +
                 ", friendlyName='" + friendlyName + '\'' +
                 ", availableSeats=" + availableSeats +
                 '}';
