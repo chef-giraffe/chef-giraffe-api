@@ -1,9 +1,17 @@
 -- table creates
+create table restaurant
+(
+    id uuid primary key not null,
+    name varchar2(75) not null
+);
+
 create table restaurant_table
 (
     id uuid primary key not null,
+    restaurant_id uuid not null,
     friendly_name varchar(50) not null,
-    available_seats integer not null
+    available_seats integer not null,
+    foreign key (restaurant_id) references restaurant(id)
 );
 
 create table menu_item
