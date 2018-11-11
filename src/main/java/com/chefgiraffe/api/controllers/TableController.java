@@ -1,8 +1,6 @@
 package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Table;
-import com.chefgiraffe.api.repositories.models.RestaurantOrder;
-import com.chefgiraffe.api.repositories.models.RestaurantTable;
 import com.chefgiraffe.api.services.RestaurantTableService;
 import com.chefgiraffe.api.services.models.CreatedTable;
 import com.chefgiraffe.api.services.models.TableCreate;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,13 +39,13 @@ public class TableController {
         return ResponseEntity.ok(restaurantTableService.retrieveAll());
     }
 
-    @GetMapping("/table/{id}")
+    @GetMapping("/tables/{id}")
     public ResponseEntity<?> retrieve(@PathVariable("id") String id) {
 
         Optional<TableInfo> table = restaurantTableService.retrieve(new TableLookup(UUID.fromString(id)));
         if (table.isPresent()) {
 
-            logger.info("found table {} in restaurant {}", table.get().getTableId().toString(),
+            logger.info("found table {} in restaurant {}", table.get().getRestaurantTableId().toString(),
                     table.get().getRestaurantId().toString());
             return ResponseEntity.ok(table.get());
         } else {
@@ -58,8 +54,8 @@ public class TableController {
         }
     }
 
-    @PostMapping("/table")
-    public ResponseEntity<Object> create(@RequestBody Table table) {
+    @PostMapping("/tables")
+    public ResponseEntity<?> create(@RequestBody Table table) {
 
         Optional<CreatedTable> createdTable =
                 restaurantTableService.create(new TableCreate(table.getRestaurantId(),
@@ -69,7 +65,7 @@ public class TableController {
 
             UriComponents builder = UriComponentsBuilder.fromUriString(baseUrl)
                     .pathSegment("v1", "table", "{id}")
-                    .buildAndExpand(createdTable.get().getTableId().toString());
+                    .buildAndExpand(createdTable.get().getRestaurantTableId().toString());
 
             return ResponseEntity.created(builder.toUri()).build();
         } else {

@@ -7,8 +7,8 @@ public class TableInfo extends Table {
     private String friendlyName;
     private Integer availableSeats;
 
-    public TableInfo(UUID tableId, UUID restaurantId, String friendlyName, Integer availableSeats) {
-        super(tableId, restaurantId);
+    public TableInfo(UUID restaurantTableId, UUID restaurantId, String friendlyName, Integer availableSeats) {
+        super(restaurantTableId, restaurantId);
         this.friendlyName = friendlyName;
         this.availableSeats = availableSeats;
     }

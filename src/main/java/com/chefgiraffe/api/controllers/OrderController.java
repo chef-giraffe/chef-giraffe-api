@@ -2,10 +2,7 @@ package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Order;
 import com.chefgiraffe.api.services.RestaurantOrderService;
-import com.chefgiraffe.api.services.models.CreatedOrder;
-import com.chefgiraffe.api.services.models.OrderCreate;
-import com.chefgiraffe.api.services.models.OrderInfo;
-import com.chefgiraffe.api.services.models.OrderLookup;
+import com.chefgiraffe.api.services.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,22 @@ public class OrderController {
 
             logger.info("found order {}", retrieved.get().getOrderId());
             return ResponseEntity.ok(retrieved);
+        } else {
+
+            logger.warn("order {} not found", id);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/orders/{id}/items")
+    public ResponseEntity<?> readItems(@PathVariable("id") String id) {
+
+        Optional<OrderDetails> orderDetails =
+                restaurantOrderService.retrieveDetails(new OrderLookup(UUID.fromString(id)));
+        if (orderDetails.isPresent()) {
+
+            logger.info("found details for order {}", orderDetails.get().getOrderId());
+            return ResponseEntity.ok(orderDetails.get());
         } else {
 
             logger.warn("order {} not found", id);

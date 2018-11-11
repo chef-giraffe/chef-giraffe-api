@@ -2,7 +2,7 @@ package com.chefgiraffe.api.services.models;
 
 import java.util.UUID;
 
-public class UpdatedOrder extends Order{
+public class UpdatedOrder extends Order {
 
     private OrderStatus newStatus;
 

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantOrderServiceImpl implements RestaurantOrderService {
@@ -51,10 +52,37 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
         Optional<RestaurantOrder> order = restaurantOrderRepository.findById(lookup.getOrderId());
         if (order.isPresent()) {
+
             logger.info("found order {} for lookup", order.get().getId());
             return Optional.of(new OrderInfo(order.get().getId(),
                                              order.get().getRestaurantTableId(),
                                              order.get().getOrderStatus()));
+        } else {
+            logger.warn("order {} not found", lookup.getOrderId());
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<OrderDetails> retrieveDetails(OrderLookup lookup) {
+
+        Optional<RestaurantOrder> order = restaurantOrderRepository.findById(lookup.getOrderId());
+        if (order.isPresent()) {
+
+            logger.info("found order {} for details lookup", order.get().getId());
+
+            List<ItemDetails> itemDetails =
+                    order.get().getRestaurantMenuItems().stream()
+                            .map(restaurantMenuItem ->
+                                new ItemDetails(restaurantMenuItem.getId(),
+                                                restaurantMenuItem.getRestaurantMenuId(),
+                                                restaurantMenuItem.getName(),
+                                                restaurantMenuItem.getDescription(),
+                                                restaurantMenuItem.getPrice(),
+                                                restaurantMenuItem.getImageUri()))
+                            .collect(Collectors.toList());
+
+            return Optional.of(new OrderDetails(order.get().getId(), order.get().getRestaurantTableId(), itemDetails));
         } else {
             logger.warn("order {} not found", lookup.getOrderId());
             return Optional.empty();

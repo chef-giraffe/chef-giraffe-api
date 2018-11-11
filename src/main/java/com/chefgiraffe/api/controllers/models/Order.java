@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Order {
+
     private UUID tableId;
     private List<UUID> orderItems;
 
@@ -29,5 +30,13 @@ public class Order {
 
     public void setOrderItems(List<UUID> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "tableId=" + tableId +
+                ", orderItems=" + orderItems +
+                '}';
     }
 }

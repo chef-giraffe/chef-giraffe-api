@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface RestaurantOrderService {
     List<OrderInfo> retrieveAll();
     Optional<OrderInfo> retrieve(OrderLookup lookup);
+    Optional<OrderDetails> retrieveDetails(OrderLookup lookup);
     Optional<CreatedOrder> create(OrderCreate create);
     Optional<UpdatedOrder> update(OrderUpdate update);
 }
