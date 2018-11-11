@@ -22,6 +22,9 @@ public class RestaurantTableRequest {
     private String description;
     private Timestamp createdTime;
 
+    public RestaurantTableRequest() {
+    }
+
     public RestaurantTableRequest(UUID restaurantTableId, String description) {
         this.restaurantTableId = restaurantTableId;
         this.description = description;
