@@ -59,6 +59,6 @@ public class RestaurantOrderServiceImplIT {
 
         assertTrue(updatedOrder.isPresent());
         assertEquals(createdOrder.get().getId(), updatedOrder.get().getId());
-        assertEquals(OrderStatus.PREPARING, updatedOrder.get().getNewStatus());
+        assertEquals(OrderStatus.PREPARING, updatedOrder.get().getOrderStatus());
     }
 }

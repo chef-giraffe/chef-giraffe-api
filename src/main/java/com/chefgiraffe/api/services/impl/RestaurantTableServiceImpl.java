@@ -53,6 +53,7 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
                     .map(restaurantOrder ->
                             new OrderDetails(restaurantOrder.getId(),
                                     restaurantOrder.getRestaurantTableId(),
+                                    OrderStatus.valueOf(restaurantOrder.getOrderStatus()),
                                     restaurantOrder.getRestaurantMenuItems().stream()
                                             .map(restaurantMenuItem ->
                                                     new ItemDetails(restaurantMenuItem.getId(),
@@ -87,6 +88,7 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
                     .map(restaurantOrder ->
                             new OrderDetails(restaurantOrder.getId(),
                                     restaurantOrder.getRestaurantTableId(),
+                                    OrderStatus.valueOf(restaurantOrder.getOrderStatus()),
                                     restaurantOrder.getRestaurantMenuItems().stream()
                                             .map(restaurantMenuItem ->
                                                     new ItemDetails(restaurantMenuItem.getId(),

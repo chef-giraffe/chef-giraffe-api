@@ -7,8 +7,8 @@ public class OrderDetails extends Order {
 
     private List<ItemDetails> itemDetails;
 
-    public OrderDetails(UUID orderId, UUID tableId, List<ItemDetails> itemDetails) {
-        super(orderId, tableId);
+    public OrderDetails(UUID orderId, UUID tableId, OrderStatus orderStatus, List<ItemDetails> itemDetails) {
+        super(orderId, tableId, orderStatus);
         this.itemDetails = itemDetails;
     }
 

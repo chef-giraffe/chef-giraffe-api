@@ -40,6 +40,7 @@ create table restaurant_order
     restaurant_table_id uuid not null,
     order_status varchar(50) not null,
     created_time timestamp not null,
+    updated_time timestamp null,
     foreign key (restaurant_table_id) references restaurant_table(id)
 );
 

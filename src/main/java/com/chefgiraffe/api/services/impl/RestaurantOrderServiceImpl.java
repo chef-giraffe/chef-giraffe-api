@@ -44,7 +44,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         restaurantOrderRepository.findAll().forEach(restaurantOrder ->
                 orders.add(new OrderInfo(restaurantOrder.getId(),
                                          restaurantOrder.getRestaurantTableId(),
-                                         restaurantOrder.getOrderStatus(),
+                                         OrderStatus.valueOf(restaurantOrder.getOrderStatus()),
                                          restaurantOrder.getCreatedTime().toLocalDateTime())));
 
         return orders;
@@ -59,7 +59,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
             logger.info("found order {} for lookup", order.get().getId());
             return Optional.of(new OrderInfo(order.get().getId(),
                                              order.get().getRestaurantTableId(),
-                                             order.get().getOrderStatus(),
+                                             OrderStatus.valueOf(order.get().getOrderStatus()),
                                              order.get().getCreatedTime().toLocalDateTime()));
         } else {
             logger.warn("order {} not found", lookup.getOrderId());
@@ -86,7 +86,10 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
                                                 restaurantMenuItem.getImageUri()))
                             .collect(Collectors.toList());
 
-            return Optional.of(new OrderDetails(order.get().getId(), order.get().getRestaurantTableId(), itemDetails));
+            return Optional.of(new OrderDetails(order.get().getId(),
+                                                order.get().getRestaurantTableId(),
+                                                OrderStatus.valueOf(order.get().getOrderStatus()),
+                                                itemDetails));
         } else {
             logger.warn("order {} not found", lookup.getOrderId());
             return Optional.empty();
@@ -113,6 +116,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
             return Optional.of(new CreatedOrder(savedRestaurantOrder.getId(),
                                                 savedRestaurantOrder.getRestaurantTableId(),
+                                                OrderStatus.valueOf(savedRestaurantOrder.getOrderStatus()),
                                                 savedRestaurantOrder.getRestaurantMenuItems().size()));
         } else {
             logger.warn("table {} not found", create.getRestaurantTableId().toString());
@@ -137,7 +141,8 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
             return Optional.of(new UpdatedOrder(savedUpdatedOrder.getId(),
                                                 savedUpdatedOrder.getRestaurantTableId(),
-                                                OrderStatus.valueOf(savedUpdatedOrder.getOrderStatus())));
+                                                OrderStatus.valueOf(savedUpdatedOrder.getOrderStatus()),
+                                                savedUpdatedOrder.getUpdatedTime().toLocalDateTime()));
 
         } else {
             logger.warn("order {} not found", update.getOrderId().toString());

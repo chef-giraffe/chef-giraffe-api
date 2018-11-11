@@ -5,17 +5,11 @@ import java.util.UUID;
 
 public class OrderInfo extends Order {
 
-    private String orderStatus;
     private LocalDateTime createdTime;
 
-    public OrderInfo(UUID orderId, UUID tableId, String orderStatus, LocalDateTime createdTime) {
-        super(orderId, tableId);
-        this.orderStatus = orderStatus;
+    public OrderInfo(UUID orderId, UUID tableId, OrderStatus orderStatus, LocalDateTime createdTime) {
+        super(orderId, tableId, orderStatus);
         this.createdTime = createdTime;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
     }
 
     public LocalDateTime getCreatedTime() {
@@ -25,8 +19,7 @@ public class OrderInfo extends Order {
     @Override
     public String toString() {
         return "OrderInfo{" +
-                "orderStatus='" + orderStatus + '\'' +
-                ", createdTime=" + createdTime +
+                "createdTime=" + createdTime +
                 "} " + super.toString();
     }
 }

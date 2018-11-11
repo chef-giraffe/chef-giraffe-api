@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class RestaurantOrder {
     private UUID restaurantTableId;
     private String orderStatus;
     private Timestamp createdTime;
+    private Timestamp updatedTime;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "restaurant_order_item",
@@ -37,13 +39,6 @@ public class RestaurantOrder {
         this.createdTime = createdTime;
         this.restaurantMenuItems = new ArrayList<>();
         this.orderStatus = orderStatus;
-    }
-
-    public RestaurantOrder(UUID restaurantTableId, String orderStatus, Timestamp createdTime, List<RestaurantMenuItem> restaurantMenuItems) {
-        this.restaurantTableId = restaurantTableId;
-        this.orderStatus = orderStatus;
-        this.createdTime = createdTime;
-        this.restaurantMenuItems = restaurantMenuItems;
     }
 
     public UUID getId() {
@@ -66,12 +61,17 @@ public class RestaurantOrder {
         return createdTime;
     }
 
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
+    }
+
     public boolean addItem(RestaurantMenuItem restaurantMenuItem) {
         return this.restaurantMenuItems.add(restaurantMenuItem);
     }
 
     public void updateStatus(String newStatus) {
         this.orderStatus = newStatus;
+        this.updatedTime = Timestamp.valueOf(LocalDateTime.now());
     }
 
     @Override
@@ -81,6 +81,7 @@ public class RestaurantOrder {
                 ", restaurantTableId=" + restaurantTableId +
                 ", orderStatus='" + orderStatus + '\'' +
                 ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
                 ", restaurantMenuItems=" + restaurantMenuItems +
                 '}';
     }
