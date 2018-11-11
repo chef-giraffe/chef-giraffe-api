@@ -2,10 +2,9 @@ package com.chefgiraffe.api.repositories.models;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,13 +20,20 @@ public class RestaurantTable {
     private String friendlyName;
     private Integer availableSeats;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "restaurant_table_id")
+    private List<RestaurantOrder> restaurantOrders;
+
     protected RestaurantTable() {
     }
 
-    public RestaurantTable(UUID restaurantId, String friendlyName, Integer availableSeats) {
+    public RestaurantTable(UUID restaurantId,
+                           String friendlyName,
+                           Integer availableSeats) {
         this.restaurantId = restaurantId;
         this.friendlyName = friendlyName;
         this.availableSeats = availableSeats;
+        this.restaurantOrders = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -46,6 +52,10 @@ public class RestaurantTable {
         return availableSeats;
     }
 
+    public List<RestaurantOrder> getRestaurantOrders() {
+        return restaurantOrders;
+    }
+
     @Override
     public String toString() {
         return "RestaurantTable{" +
@@ -53,6 +63,7 @@ public class RestaurantTable {
                 ", restaurantId=" + restaurantId +
                 ", friendlyName='" + friendlyName + '\'' +
                 ", availableSeats=" + availableSeats +
+                ", restaurantOrders=" + restaurantOrders +
                 '}';
     }
 }

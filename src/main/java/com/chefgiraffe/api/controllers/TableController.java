@@ -2,10 +2,7 @@ package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Table;
 import com.chefgiraffe.api.services.RestaurantTableService;
-import com.chefgiraffe.api.services.models.CreatedTable;
-import com.chefgiraffe.api.services.models.TableCreate;
-import com.chefgiraffe.api.services.models.TableInfo;
-import com.chefgiraffe.api.services.models.TableLookup;
+import com.chefgiraffe.api.services.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +51,37 @@ public class TableController {
         }
     }
 
+    @GetMapping("/tables/{id}/orders")
+    public ResponseEntity<?> readOrders(@PathVariable("id") String id) {
+
+        Optional<TableOrderDetails> orderDetails =
+                restaurantTableService.retrieveAllOrders(new TableLookup(UUID.fromString(id)));
+        if (orderDetails.isPresent()) {
+
+            logger.info("found order details for table {}", orderDetails.get().getId());
+            return ResponseEntity.ok(orderDetails.get());
+        } else {
+            logger.warn("table {} not found", id);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/tables/{id}/orders/preparing")
+    public ResponseEntity<?> readPreparingOrders(@PathVariable("id") String id) {
+
+        Optional<TableOrderDetails> orderDetails =
+                restaurantTableService.retrieveSpecificOrders(new TableLookup(UUID.fromString(id),
+                                                                              OrderStatus.PREPARING));
+        if (orderDetails.isPresent()) {
+
+            logger.info("found preparing order details for table {}", orderDetails.get().getId());
+            return ResponseEntity.ok(orderDetails.get());
+        } else {
+            logger.warn("table {} not found", id);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/tables")
     public ResponseEntity<?> create(@RequestBody Table table) {
 
@@ -71,6 +99,5 @@ public class TableController {
         } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
     }
 }

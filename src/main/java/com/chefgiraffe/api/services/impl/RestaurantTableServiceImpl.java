@@ -5,10 +5,7 @@ import com.chefgiraffe.api.repositories.RestaurantTableRepository;
 import com.chefgiraffe.api.repositories.models.Restaurant;
 import com.chefgiraffe.api.repositories.models.RestaurantTable;
 import com.chefgiraffe.api.services.RestaurantTableService;
-import com.chefgiraffe.api.services.models.CreatedTable;
-import com.chefgiraffe.api.services.models.TableCreate;
-import com.chefgiraffe.api.services.models.TableInfo;
-import com.chefgiraffe.api.services.models.TableLookup;
+import com.chefgiraffe.api.services.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantTableServiceImpl implements RestaurantTableService {
@@ -26,7 +24,8 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     private final RestaurantTableRepository restaurantTableRepository;
 
     @Autowired
-    public RestaurantTableServiceImpl(RestaurantRepository restaurantRepository, RestaurantTableRepository restaurantTableRepository) {
+    public RestaurantTableServiceImpl(RestaurantRepository restaurantRepository,
+                                      RestaurantTableRepository restaurantTableRepository) {
         this.restaurantRepository = restaurantRepository;
         this.restaurantTableRepository = restaurantTableRepository;
     }
@@ -42,6 +41,63 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
                                          restaurantTable.getAvailableSeats())));
 
         return tables;
+    }
+
+    @Override
+    public Optional<TableOrderDetails> retrieveAllOrders(TableLookup lookup) {
+
+        Optional<RestaurantTable> table = restaurantTableRepository.findById(lookup.getRestaurantTableId());
+        if (table.isPresent()) {
+
+            List<OrderDetails> orderDetails = table.get().getRestaurantOrders().stream()
+                    .map(restaurantOrder ->
+                            new OrderDetails(restaurantOrder.getId(),
+                                    restaurantOrder.getRestaurantTableId(),
+                                    restaurantOrder.getRestaurantMenuItems().stream()
+                                            .map(restaurantMenuItem ->
+                                                    new ItemDetails(restaurantMenuItem.getId(),
+                                                            restaurantMenuItem.getRestaurantMenuId(),
+                                                            restaurantMenuItem.getName(),
+                                                            restaurantMenuItem.getDescription(),
+                                                            restaurantMenuItem.getPrice(),
+                                                            restaurantMenuItem.getImageUri()))
+                                            .collect(Collectors.toList())))
+                    .collect(Collectors.toList());
+
+            return Optional.of(new TableOrderDetails(table.get().getId(), table.get().getRestaurantId(), orderDetails));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<TableOrderDetails> retrieveSpecificOrders(TableLookup lookup) {
+
+        Optional<RestaurantTable> table = restaurantTableRepository.findById(lookup.getRestaurantTableId());
+        if (table.isPresent()) {
+
+            String orderStatusFilter = lookup.getOrderStatus().toString();
+            List<OrderDetails> orderDetails = table.get().getRestaurantOrders().stream()
+                    .filter(restaurantOrder ->
+                            restaurantOrder.getOrderStatus().equals(orderStatusFilter))
+                    .map(restaurantOrder ->
+                            new OrderDetails(restaurantOrder.getId(),
+                                    restaurantOrder.getRestaurantTableId(),
+                                    restaurantOrder.getRestaurantMenuItems().stream()
+                                            .map(restaurantMenuItem ->
+                                                    new ItemDetails(restaurantMenuItem.getId(),
+                                                            restaurantMenuItem.getRestaurantMenuId(),
+                                                            restaurantMenuItem.getName(),
+                                                            restaurantMenuItem.getDescription(),
+                                                            restaurantMenuItem.getPrice(),
+                                                            restaurantMenuItem.getImageUri()))
+                                            .collect(Collectors.toList())))
+                    .collect(Collectors.toList());
+
+            return Optional.of(new TableOrderDetails(table.get().getId(), table.get().getRestaurantId(), orderDetails));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

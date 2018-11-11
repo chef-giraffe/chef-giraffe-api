@@ -18,8 +18,8 @@ public class RestaurantOrder {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
+    @Column(name = "restaurant_table_id")
     private UUID restaurantTableId;
-
     private String orderStatus;
     private Timestamp createdTime;
 
