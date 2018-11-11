@@ -2,7 +2,8 @@
 create table restaurant
 (
     id uuid primary key not null,
-    name varchar2(75) not null
+    name varchar2(75) not null,
+    created_time timestamp not null
 );
 
 create table restaurant_table

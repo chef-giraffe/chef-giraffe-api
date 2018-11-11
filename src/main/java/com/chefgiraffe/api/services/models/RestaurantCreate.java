@@ -1,13 +1,10 @@
-package com.chefgiraffe.api.controllers.models;
+package com.chefgiraffe.api.services.models;
 
-public class Restaurant {
+public class RestaurantCreate {
 
     private String name;
 
-    public Restaurant() {
-    }
-
-    public Restaurant(String name) {
+    public RestaurantCreate(String name) {
         this.name = name;
     }
 
@@ -17,7 +14,7 @@ public class Restaurant {
 
     @Override
     public String toString() {
-        return "Restaurant{" +
+        return "RestaurantCreate{" +
                 "name='" + name + '\'' +
                 '}';
     }

@@ -3,6 +3,8 @@ package com.chefgiraffe.api.services.impl;
 import com.chefgiraffe.api.repositories.RestaurantRepository;
 import com.chefgiraffe.api.repositories.models.Restaurant;
 import com.chefgiraffe.api.services.RestaurantService;
+import com.chefgiraffe.api.services.models.CreatedRestaurant;
+import com.chefgiraffe.api.services.models.RestaurantCreate;
 import com.chefgiraffe.api.services.models.RestaurantInfo;
 import com.chefgiraffe.api.services.models.RestaurantLookup;
 import org.slf4j.Logger;
@@ -10,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,5 +57,16 @@ public class RestaurantServiceImpl implements RestaurantService {
             logger.warn("restaurant {} not found", lookup.getRestaurantId().toString());
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<CreatedRestaurant> create(RestaurantCreate create) {
+
+        Restaurant savedRestaurant = restaurantRepository.save(new Restaurant(create.getName(),
+                                                                              Timestamp.valueOf(LocalDateTime.now())));
+
+        return Optional.of(new CreatedRestaurant(savedRestaurant.getId(),
+                                                 savedRestaurant.getName(),
+                                                 savedRestaurant.getCreatedTime().toLocalDateTime()));
     }
 }

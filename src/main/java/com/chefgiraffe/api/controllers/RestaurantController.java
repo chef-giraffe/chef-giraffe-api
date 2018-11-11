@@ -1,15 +1,20 @@
 package com.chefgiraffe.api.controllers;
 
+import com.chefgiraffe.api.controllers.models.Restaurant;
 import com.chefgiraffe.api.services.RestaurantService;
+import com.chefgiraffe.api.services.models.CreatedRestaurant;
+import com.chefgiraffe.api.services.models.RestaurantCreate;
 import com.chefgiraffe.api.services.models.RestaurantInfo;
 import com.chefgiraffe.api.services.models.RestaurantLookup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -20,10 +25,12 @@ public class RestaurantController {
     private static Logger logger = LoggerFactory.getLogger(RestaurantController.class);
 
     private final RestaurantService restaurantService;
+    private final String baseUrl;
 
     @Autowired
-    public RestaurantController(RestaurantService restaurantService) {
+    public RestaurantController(RestaurantService restaurantService, @Value("${base_url}") String baseUrl) {
         this.restaurantService = restaurantService;
+        this.baseUrl = baseUrl;
     }
 
     @GetMapping("/restaurants")
@@ -42,6 +49,24 @@ public class RestaurantController {
         } else {
             logger.warn("restaurant {} was not found", id);
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/restaurants")
+    public ResponseEntity<?> create(@RequestBody Restaurant restaurant) {
+
+        Optional<CreatedRestaurant> createdRestaurant =
+                restaurantService.create(new RestaurantCreate(restaurant.getName()));
+        if (createdRestaurant.isPresent()) {
+
+            UriComponents uriComponentsBuilder = UriComponentsBuilder.fromUriString(baseUrl)
+                    .pathSegment("restaurants", "{id}")
+                    .buildAndExpand(createdRestaurant.get().getId().toString());
+
+            return ResponseEntity.created(uriComponentsBuilder.toUri()).build();
+        } else {
+            logger.warn("restaurant was not created for {}", restaurant.getName());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

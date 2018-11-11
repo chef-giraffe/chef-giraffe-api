@@ -1,5 +1,5 @@
-insert into restaurant(id, name)
-values ('a5eea915-128e-40b0-963c-e61164750511','Darnell''s Darn Good!');
+insert into restaurant(id, name, created_time)
+values ('a5eea915-128e-40b0-963c-e61164750511','Darnell''s Darn Good!','2018-11-11');
 
 insert into restaurant_table(id, restaurant_id, friendly_name, available_seats)
 values ('127e65d0-13a0-4be2-9b5a-ed0635b9c5ce','a5eea915-128e-40b0-963c-e61164750511','table 0',5),
