@@ -1,12 +1,14 @@
 package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Order;
+import com.chefgiraffe.api.controllers.models.StatusUpdate;
 import com.chefgiraffe.api.services.RestaurantOrderService;
 import com.chefgiraffe.api.services.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
@@ -84,6 +86,28 @@ public class OrderController {
 
             logger.warn("order not created for table {}", order.getTableId());
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping("/orders/{id}")
+    public ResponseEntity<?> updateOrder(@PathVariable("id") UUID id, @RequestBody StatusUpdate statusUpdate) {
+
+        OrderStatus newStatus;
+        try {
+            newStatus = OrderStatus.valueOf(statusUpdate.getStatus());
+        } catch (IllegalArgumentException ex) {
+            logger.error("attempt to update status to invalid {}", statusUpdate.getStatus());
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<UpdatedOrder> updated = restaurantOrderService.update(new OrderUpdate(id, newStatus));
+        if (updated.isPresent()) {
+
+            logger.info("successfully updated status for order {}", updated.get().getId());
+            return ResponseEntity.ok(updated.get());
+        } else {
+            logger.warn("unable to update status for order {}", id);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

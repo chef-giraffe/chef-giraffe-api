@@ -1,5 +1,6 @@
 package com.chefgiraffe.api.controllers;
 
+import com.chefgiraffe.api.controllers.models.Request;
 import com.chefgiraffe.api.controllers.models.Restaurant;
 import com.chefgiraffe.api.services.RestaurantService;
 import com.chefgiraffe.api.services.models.*;
@@ -63,11 +64,35 @@ public class RestaurantController {
         }
     }
 
+    @PostMapping("/restaurants/{id}/requests")
+    public ResponseEntity<?> createRestaurantRequest(@PathVariable("id") String id, @RequestBody Request request) {
+        Optional<CreatedRequest> createdRequest =
+                restaurantService.createRestaurantRequest(new RequestCreate(request.getRestaurantTableId(),
+                                                                            request.getDescription()));
+        if (createdRequest.isPresent()) {
+
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(baseUrl)
+                    .pathSegment("restaurants", "{id}", "requests", "{requestId}")
+                    .buildAndExpand(id, createdRequest.get().getId().toString());
+
+            return ResponseEntity.created(uriComponents.toUri()).build();
+        } else {
+            logger.warn("could not createRestaurant request for table {}", request.getRestaurantTableId().toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/restaurants/{id}/requests/{requestId}")
+    public ResponseEntity<?> readOneRestaurantRequest(@PathVariable("id") String id,
+                                                      @PathVariable("requestId") String requestId) {
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    }
+
     @PostMapping("/restaurants")
     public ResponseEntity<?> create(@RequestBody Restaurant restaurant) {
 
         Optional<CreatedRestaurant> createdRestaurant =
-                restaurantService.create(new RestaurantCreate(restaurant.getName()));
+                restaurantService.createRestaurant(new RestaurantCreate(restaurant.getName()));
         if (createdRestaurant.isPresent()) {
 
             UriComponents uriComponentsBuilder = UriComponentsBuilder.fromUriString(baseUrl)

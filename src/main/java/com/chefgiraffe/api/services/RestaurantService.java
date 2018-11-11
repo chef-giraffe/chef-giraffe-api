@@ -9,5 +9,6 @@ public interface RestaurantService {
     List<RestaurantInfo> retrieveAll();
     Optional<RestaurantInfo> retrieveOne(RestaurantLookup lookup);
     Optional<RestaurantMenuDetails> retrieveMenuDetails(RestaurantLookup lookup);
-    Optional<CreatedRestaurant> create(RestaurantCreate create);
+    Optional<CreatedRequest> createRestaurantRequest(RequestCreate create);
+    Optional<CreatedRestaurant> createRestaurant(RestaurantCreate create);
 }

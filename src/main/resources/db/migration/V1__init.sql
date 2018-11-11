@@ -51,3 +51,12 @@ create table restaurant_order_item
     foreign key (restaurant_order_id) references restaurant_order(id),
     foreign key (restaurant_menu_item_id) references restaurant_menu_item(id)
 );
+
+create table restaurant_request
+(
+    id uuid primary key not null,
+    restaurant_id uuid not null,
+    description varchar(255) not null,
+    created_time timestamp not null,
+    foreign key (restaurant_id) references restaurant(id)
+);

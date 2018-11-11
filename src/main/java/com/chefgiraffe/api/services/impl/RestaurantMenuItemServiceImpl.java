@@ -44,7 +44,7 @@ public class RestaurantMenuItemServiceImpl implements RestaurantItemService {
                     newMenuItem.getRestaurantMenuId().toString());
             return Optional.of(newMenuItem);
         } else {
-            logger.warn("tried to create an item for unknown restaurant menu {}", restaurantMenuId.toString());
+            logger.warn("tried to createRestaurant an item for unknown restaurant menu {}", restaurantMenuId.toString());
             return Optional.empty();
         }
     }

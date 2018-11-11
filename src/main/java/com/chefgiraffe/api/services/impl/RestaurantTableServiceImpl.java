@@ -143,7 +143,7 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
                     newTable.getRestaurantId().toString());
             return Optional.of(new CreatedTable(newTable.getId(), newTable.getRestaurantId()));
         } else {
-            logger.warn("tried to create a table for unknown restaurant {}", create.getRestaurantId().toString());
+            logger.warn("tried to createRestaurant a table for unknown restaurant {}", create.getRestaurantId().toString());
             return Optional.empty();
         }
     }

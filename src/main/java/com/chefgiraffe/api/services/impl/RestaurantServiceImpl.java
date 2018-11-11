@@ -92,7 +92,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Optional<CreatedRestaurant> create(RestaurantCreate create) {
+    public Optional<CreatedRequest> createRestaurantRequest(RequestCreate create) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<CreatedRestaurant> createRestaurant(RestaurantCreate create) {
 
         Restaurant savedRestaurant = restaurantRepository.save(new Restaurant(create.getName(),
                                                                               Timestamp.valueOf(LocalDateTime.now())));
