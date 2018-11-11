@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -34,7 +31,8 @@ public class RestaurantOrderServiceImplIT {
     public void createOrder_OrderIsCreated() {
 
         UUID restaurantTableId = UUID.fromString("127e65d0-13a0-4be2-9b5a-ed0635b9c5ce");
-        List<UUID> itemIds = Collections.singletonList(UUID.randomUUID());
+        List<UUID> itemIds = Arrays.asList(UUID.fromString("9d725f88-3f9f-477f-af88-3a8f09dbb6fb"),
+                                           UUID.fromString("544305ca-3526-47d1-9b9e-6aca1bf8cdeb"));
 
         Optional<CreatedOrder> createdOrder = orderService.create(restaurantTableId, itemIds);
 
@@ -50,7 +48,8 @@ public class RestaurantOrderServiceImplIT {
     public void updateOrder_OrderIsUpdated() {
 
         UUID restaurantTableId = UUID.fromString("127e65d0-13a0-4be2-9b5a-ed0635b9c5ce");
-        List<UUID> itemIds = Collections.singletonList(UUID.randomUUID());
+        List<UUID> itemIds = Arrays.asList(UUID.fromString("9d725f88-3f9f-477f-af88-3a8f09dbb6fb"),
+                                           UUID.fromString("544305ca-3526-47d1-9b9e-6aca1bf8cdeb"));
 
         Optional<CreatedOrder> createdOrder = orderService.create(restaurantTableId, itemIds);
 

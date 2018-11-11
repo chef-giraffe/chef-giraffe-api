@@ -14,13 +14,23 @@ create table restaurant_table
     foreign key (restaurant_id) references restaurant(id)
 );
 
+create table restaurant_menu
+(
+    id uuid primary key not null,
+    restaurant_id uuid not null,
+    name varchar(50) not null,
+    foreign key (restaurant_id) references restaurant(id)
+);
+
 create table menu_item
 (
     id uuid primary key not null,
+    restaurant_menu_id uuid not null,
     name varchar(50) not null,
     description varchar(255) not null,
     price decimal not null,
-    image_uri varchar(255) null
+    image_uri varchar(255) null,
+    foreign key (restaurant_menu_id) references restaurant_menu(id)
 );
 
 create table restaurant_order

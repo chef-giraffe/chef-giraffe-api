@@ -21,7 +21,7 @@ public class RestaurantOrder {
 
     private String orderStatus;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "restaurant_order_item",
                 joinColumns = @JoinColumn(name = "restaurant_order_id", referencedColumnName = "id"),
                 inverseJoinColumns = @JoinColumn(name = "menu_item_id", referencedColumnName = "id"))
