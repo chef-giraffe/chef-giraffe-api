@@ -19,16 +19,16 @@ values ('2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','a5eea915-128e-40b0-963c-e6116475
        ('459fe504-3f39-42f5-8590-79c975c28c93','a5eea915-128e-40b0-963c-e61164750511','Darnell''s Provocative Desserts');
 
 insert into restaurant_menu_item(id, restaurant_menu_id, name, description, price, image_uri)
-values ('9d725f88-3f9f-477f-af88-3a8f09dbb6fb','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Beer Nachos','',4.99,null),
-       ('f97d5635-c1b3-420b-8178-3102dad63ccd','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Ballin Quesodillas','',6.95,null),
-       ('75381cac-06ce-4d80-a26a-4ba62158b989','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Hottest Damn Wings','',5.99,null),
-       ('f3d36f9e-814d-48d4-96ad-e40196aaf64e','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Darnell''s Favorite Steak','',24.95,null),
+values ('9d725f88-3f9f-477f-af88-3a8f09dbb6fb','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Beer Nachos','An unreal combination of beer and nachos.  What more do you want?',4.99,null),
+       ('f97d5635-c1b3-420b-8178-3102dad63ccd','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Ballin Quesodillas','Quesodillas so hard, you might break your ankles.',6.95,null),
+       ('75381cac-06ce-4d80-a26a-4ba62158b989','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Hottest Damn Wings','You''ve been warned.',5.99,null),
+       ('f3d36f9e-814d-48d4-96ad-e40196aaf64e','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Darnell''s Favorite Steak','Darnell''s steak cooked just like his momma makes it.',24.95,null),
        ('0c8f0c69-8ea2-4b34-aa97-fa0252cc871b','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Super Good Chicken Soup','',11.99,null),
        ('a4d2453e-637b-4f07-be0e-abcd546aac11','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Real Home Down Grilled Cheese','',9.49,null),
-       ('544305ca-3526-47d1-9b9e-6aca1bf8cdeb','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Double Crisp Tendies','',14.99,null),
-       ('cabecd42-43e6-49a2-a952-007bbae894bc','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Juicy Cheese Burger','',14.99,null),
-       ('c7758283-d8d3-4fd8-b424-30280df28f29','459fe504-3f39-42f5-8590-79c975c28c93','Melt In Your Mouth Chocolate Cake','',8.95,null),
-       ('df1b0fca-6b4c-437d-ac4d-bfa66e1adf27','459fe504-3f39-42f5-8590-79c975c28c93','Strawberry Sensation','',13.49,null);
+       ('544305ca-3526-47d1-9b9e-6aca1bf8cdeb','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Double Crisp Tendies','Tendies crisped twice.',14.99,null),
+       ('cabecd42-43e6-49a2-a952-007bbae894bc','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Juicy Cheese Burger','You think you''ve had a juicy burger, but, you''ve never had Darnell''s',14.99,null),
+       ('c7758283-d8d3-4fd8-b424-30280df28f29','459fe504-3f39-42f5-8590-79c975c28c93','Melt In Your Mouth Chocolate Cake','An warm, soft, irresistible slice of chocolate heaven.',8.95,null),
+       ('df1b0fca-6b4c-437d-ac4d-bfa66e1adf27','459fe504-3f39-42f5-8590-79c975c28c93','Strawberry Sensation','Sensory overload that''s best shared with your partner.',13.49,null);
 
 insert into restaurant_order(id, restaurant_table_id, order_status, created_time)
 values ('8d01c930-2421-4d62-94ad-2e2a64b15fbd','127e65d0-13a0-4be2-9b5a-ed0635b9c5ce','CREATED','2018-11-11'),

@@ -11,5 +11,7 @@ public interface RestaurantTableService {
     Optional<TableInfo> retrieve(TableLookup lookup);
     Optional<TableOrderDetails> retrieveAllOrders(TableLookup lookup);
     Optional<TableOrderDetails> retrieveSpecificOrders(TableLookup lookup);
+    Optional<CreatedRequest> createTableRequest(RequestCreate create);
+    Optional<TableRequestDetails> retrieveTableRequestDetails(TableLookup lookup);
     Optional<CreatedTable> create(TableCreate create);
 }

@@ -1,5 +1,6 @@
 package com.chefgiraffe.api.controllers;
 
+import com.chefgiraffe.api.controllers.models.Request;
 import com.chefgiraffe.api.controllers.models.Table;
 import com.chefgiraffe.api.services.RestaurantTableService;
 import com.chefgiraffe.api.services.models.*;
@@ -78,6 +79,36 @@ public class TableController {
         } else {
             logger.warn("table {} not found", id);
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/tables/{id}/requests")
+    public ResponseEntity<?> getAllTableRequestDetails(@PathVariable("id") UUID id) {
+
+        Optional<TableRequestDetails> tableRequestDetails =
+                restaurantTableService.retrieveTableRequestDetails(new TableLookup(id));
+
+        if (tableRequestDetails.isPresent()) {
+            return ResponseEntity.ok(tableRequestDetails.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/tables/{id}/requests")
+    public ResponseEntity<?> createTableRequest(@RequestBody Request request) {
+
+        Optional<CreatedRequest> tableRequest =
+                restaurantTableService.createTableRequest(new RequestCreate(request.getRestaurantTableId(),
+                                                                            request.getDescription()));
+        if (tableRequest.isPresent()) {
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(baseUrl)
+                    .pathSegment("tables", "{id}", "requests", "{requestId}")
+                    .buildAndExpand(tableRequest.get().getRestaurantTableId(), tableRequest.get().getId());
+
+            return ResponseEntity.created(uriComponents.toUri()).build();
+        } else {
+            return ResponseEntity.badRequest().build();
         }
     }
 

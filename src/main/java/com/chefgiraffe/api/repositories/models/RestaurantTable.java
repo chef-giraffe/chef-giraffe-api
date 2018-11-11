@@ -26,7 +26,7 @@ public class RestaurantTable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_table_id")
-    private List<RestaurantRequest> restaurantRequests;
+    private List<RestaurantTableRequest> restaurantTableRequests;
 
     protected RestaurantTable() {
     }
@@ -38,7 +38,7 @@ public class RestaurantTable {
         this.friendlyName = friendlyName;
         this.availableSeats = availableSeats;
         this.restaurantOrders = new ArrayList<>();
-        this.restaurantRequests = new ArrayList<>();
+        this.restaurantTableRequests = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -61,12 +61,12 @@ public class RestaurantTable {
         return restaurantOrders;
     }
 
-    public List<RestaurantRequest> getRestaurantRequests() {
-        return restaurantRequests;
+    public List<RestaurantTableRequest> getRestaurantTableRequests() {
+        return restaurantTableRequests;
     }
 
-    public boolean addRequest(RestaurantRequest restaurantRequest) {
-        return this.restaurantRequests.add(restaurantRequest);
+    public boolean addRequest(RestaurantTableRequest restaurantTableRequest) {
+        return this.restaurantTableRequests.add(restaurantTableRequest);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class RestaurantTable {
                 ", friendlyName='" + friendlyName + '\'' +
                 ", availableSeats=" + availableSeats +
                 ", restaurantOrders=" + restaurantOrders +
-                ", restaurantRequests=" + restaurantRequests +
+                ", restaurantTableRequests=" + restaurantTableRequests +
                 '}';
     }
 }

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class RestaurantRequest {
+public class RestaurantTableRequest {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -22,7 +22,7 @@ public class RestaurantRequest {
     private String description;
     private Timestamp createdTime;
 
-    public RestaurantRequest(UUID restaurantTableId, String description) {
+    public RestaurantTableRequest(UUID restaurantTableId, String description) {
         this.restaurantTableId = restaurantTableId;
         this.description = description;
         this.createdTime = Timestamp.valueOf(LocalDateTime.now());
@@ -46,7 +46,7 @@ public class RestaurantRequest {
 
     @Override
     public String toString() {
-        return "RestaurantRequest{" +
+        return "RestaurantTableRequest{" +
                 "id=" + id +
                 ", restaurantTableId=" + restaurantTableId +
                 ", description='" + description + '\'' +

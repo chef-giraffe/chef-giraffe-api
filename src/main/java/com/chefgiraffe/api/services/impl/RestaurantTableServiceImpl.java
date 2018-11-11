@@ -3,6 +3,7 @@ package com.chefgiraffe.api.services.impl;
 import com.chefgiraffe.api.repositories.RestaurantRepository;
 import com.chefgiraffe.api.repositories.RestaurantTableRepository;
 import com.chefgiraffe.api.repositories.models.Restaurant;
+import com.chefgiraffe.api.repositories.models.RestaurantTableRequest;
 import com.chefgiraffe.api.repositories.models.RestaurantTable;
 import com.chefgiraffe.api.services.RestaurantTableService;
 import com.chefgiraffe.api.services.models.*;
@@ -105,6 +106,48 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
                                                      table.get().getFriendlyName(),
                                                      table.get().getAvailableSeats(),
                                                      orderDetails));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<CreatedRequest> createTableRequest(RequestCreate create) {
+
+        Optional<RestaurantTable> table = restaurantTableRepository.findById(create.getRestaurantTableId());
+        if (table.isPresent()) {
+
+            RestaurantTable restaurantTable = table.get();
+            RestaurantTableRequest restaurantTableRequest =
+                    new RestaurantTableRequest(restaurantTable.getId(), create.getDescription());
+
+            restaurantTable.addRequest(restaurantTableRequest);
+            restaurantTableRepository.save(restaurantTable);
+
+            return Optional.of(new CreatedRequest(restaurantTableRequest.getId(),
+                                                  restaurantTableRequest.getRestaurantTableId(),
+                                                  restaurantTableRequest.getDescription(),
+                                                  restaurantTableRequest.getCreatedTime().toLocalDateTime()));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<TableRequestDetails> retrieveTableRequestDetails(TableLookup lookup) {
+
+        Optional<RestaurantTable> table = restaurantTableRepository.findById(lookup.getRestaurantTableId());
+        if (table.isPresent()) {
+            List<RequestDetails> requestDetails =
+                    table.get().getRestaurantTableRequests().stream()
+                            .map(restaurantTableRequest -> new RequestDetails(restaurantTableRequest.getId(),
+                                                                         restaurantTableRequest.getRestaurantTableId(),
+                                                                         restaurantTableRequest.getDescription()))
+                            .collect(Collectors.toList());
+
+            return Optional.of(new TableRequestDetails(table.get().getId(),
+                                                       table.get().getRestaurantId(),
+                                                       requestDetails));
         } else {
             return Optional.empty();
         }
