@@ -64,7 +64,11 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
                                             .collect(Collectors.toList())))
                     .collect(Collectors.toList());
 
-            return Optional.of(new TableOrderDetails(table.get().getId(), table.get().getRestaurantId(), orderDetails));
+            return Optional.of(new TableOrderDetails(table.get().getId(),
+                                                     table.get().getRestaurantId(),
+                                                     table.get().getFriendlyName(),
+                                                     table.get().getAvailableSeats(),
+                                                     orderDetails));
         } else {
             return Optional.empty();
         }
@@ -94,7 +98,11 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
                                             .collect(Collectors.toList())))
                     .collect(Collectors.toList());
 
-            return Optional.of(new TableOrderDetails(table.get().getId(), table.get().getRestaurantId(), orderDetails));
+            return Optional.of(new TableOrderDetails(table.get().getId(),
+                                                     table.get().getRestaurantId(),
+                                                     table.get().getFriendlyName(),
+                                                     table.get().getAvailableSeats(),
+                                                     orderDetails));
         } else {
             return Optional.empty();
         }

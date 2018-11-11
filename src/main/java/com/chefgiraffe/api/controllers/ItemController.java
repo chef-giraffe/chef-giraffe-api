@@ -1,8 +1,11 @@
 package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.repositories.models.RestaurantMenuItem;
+import com.chefgiraffe.api.services.RestaurantItemService;
+import com.chefgiraffe.api.services.models.ItemLookup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -18,15 +22,29 @@ public class ItemController {
 
     private static Logger logger = LoggerFactory.getLogger(ItemController.class);
 
-    @GetMapping("/items")
-    public ResponseEntity<List<RestaurantMenuItem>> getAllItems() {
-        List<RestaurantMenuItem> menu = Collections.singletonList(new RestaurantMenuItem(null,null, null, null, null));
-        return new ResponseEntity<List<RestaurantMenuItem>>(menu, HttpStatus.NOT_IMPLEMENTED);
+    private final RestaurantItemService restaurantItemService;
 
+    @Autowired
+    public ItemController(RestaurantItemService restaurantItemService) {
+        this.restaurantItemService = restaurantItemService;
     }
 
-    @GetMapping("/item/{id}")
-    public ResponseEntity<RestaurantMenuItem> getItem(@PathVariable("id") UUID id) {
-        return new ResponseEntity<RestaurantMenuItem>(new RestaurantMenuItem(null,null, null, null, null), HttpStatus.NOT_IMPLEMENTED);
+    @GetMapping("/items")
+    public ResponseEntity<?> readAll() {
+        return ResponseEntity.ok(restaurantItemService.retrieveAll());
+    }
+
+    @GetMapping("/items/{id}")
+    public ResponseEntity<?> readOne(@PathVariable("id") String id) {
+
+        Optional<RestaurantMenuItem> menuItem = restaurantItemService.retrieve(new ItemLookup(UUID.fromString(id)));
+        if (menuItem.isPresent()) {
+
+            logger.info("found item {}", menuItem.get().getId());
+            return ResponseEntity.ok(menuItem.get());
+        } else {
+            logger.warn("no items found for item {}", id);
+            return ResponseEntity.notFound().build();
+        }
     }
 }
