@@ -1,12 +1,17 @@
 package com.chefgiraffe.api.services.impl;
 
 import com.chefgiraffe.api.repositories.RestaurantRepository;
+import com.chefgiraffe.api.repositories.RestaurantRequestRepository;
+import com.chefgiraffe.api.repositories.RestaurantTableRepository;
 import com.chefgiraffe.api.repositories.models.Restaurant;
+import com.chefgiraffe.api.repositories.models.RestaurantRequest;
+import com.chefgiraffe.api.repositories.models.RestaurantTable;
 import com.chefgiraffe.api.services.RestaurantService;
 import com.chefgiraffe.api.services.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -22,10 +27,16 @@ public class RestaurantServiceImpl implements RestaurantService {
     private static Logger logger = LoggerFactory.getLogger(RestaurantServiceImpl.class);
 
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantTableRepository restaurantTableRepository;
+    private final RestaurantRequestRepository restaurantRequestRepository;
 
     @Autowired
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository,
+                                 RestaurantTableRepository restaurantTableRepository,
+                                 RestaurantRequestRepository restaurantRequestRepository) {
         this.restaurantRepository = restaurantRepository;
+        this.restaurantTableRepository = restaurantTableRepository;
+        this.restaurantRequestRepository = restaurantRequestRepository;
     }
 
     @Override
@@ -93,7 +104,26 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Optional<CreatedRequest> createRestaurantRequest(RequestCreate create) {
-        return Optional.empty();
+
+        Optional<RestaurantTable> table = restaurantTableRepository.findById(create.getRestaurantTableId());
+        if (table.isPresent()) {
+
+            RestaurantTable restaurantTable = table.get();
+            RestaurantRequest savedRequest =
+                    restaurantRequestRepository.save(new RestaurantRequest(restaurantTable.getId(),
+                                                                           create.getDescription()));
+
+            restaurantTable.addRequest(savedRequest);
+            restaurantTableRepository.save(restaurantTable);
+
+            return Optional.of(new CreatedRequest(savedRequest.getId(),
+                                                  restaurantTable.getId(),
+                                                  savedRequest.getDescription(),
+                                                  savedRequest.getCreatedTime().toLocalDateTime()));
+        } else {
+            logger.warn("attempt to create a request with unknown table {}", create.getRestaurantTableId());
+            return Optional.empty();
+        }
     }
 
     @Override

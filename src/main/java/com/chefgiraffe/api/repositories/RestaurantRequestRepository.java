@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface RequestRepository extends CrudRepository<RestaurantRequest, UUID> {
+public interface RestaurantRequestRepository extends CrudRepository<RestaurantRequest, UUID> {
 }
