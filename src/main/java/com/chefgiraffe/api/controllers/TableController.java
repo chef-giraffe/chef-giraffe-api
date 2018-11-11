@@ -1,8 +1,8 @@
 package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Table;
-import com.chefgiraffe.api.repositories.OrderRepository;
-import com.chefgiraffe.api.repositories.TableRepository;
+import com.chefgiraffe.api.repositories.RestaurantOrderRepository;
+import com.chefgiraffe.api.repositories.RestaurantTableRepository;
 import com.chefgiraffe.api.repositories.models.RestaurantOrder;
 import com.chefgiraffe.api.repositories.models.RestaurantTable;
 import com.chefgiraffe.api.services.RestaurantTableService;
@@ -22,24 +22,24 @@ import java.util.UUID;
 
 @RestController
 public class TableController {
-    private TableRepository tableRepository;
-    private OrderRepository orderRepository;
+    private RestaurantTableRepository restaurantTableRepository;
+    private RestaurantOrderRepository restaurantOrderRepository;
     private RestaurantTableService restaurantTableService;
     @Value("${base_url}")
     private String base_url;
 
 
     @Autowired
-    public TableController(RestaurantTableService restaurantTableService, TableRepository tableRepository, OrderRepository orderRepository) {
+    public TableController(RestaurantTableService restaurantTableService, RestaurantTableRepository restaurantTableRepository, RestaurantOrderRepository restaurantOrderRepository) {
         this.restaurantTableService = restaurantTableService;
-        this.orderRepository = orderRepository;
-        this.tableRepository = tableRepository;
+        this.restaurantOrderRepository = restaurantOrderRepository;
+        this.restaurantTableRepository = restaurantTableRepository;
     }
 
     @GetMapping("/tables")
     public ResponseEntity<List<RestaurantTable>> getAllTables() {
         List<RestaurantTable> restaurantTables = new ArrayList<>();
-        tableRepository.findAll().forEach(restaurantTables::add);
+        restaurantTableRepository.findAll().forEach(restaurantTables::add);
         return new ResponseEntity<>(restaurantTables, HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -58,14 +58,14 @@ public class TableController {
 
     @GetMapping("/table/{id}")
     public ResponseEntity<Object> getTable(@PathVariable("id") UUID id) {
-        Optional<RestaurantTable> table = tableRepository.findById(id);
+        Optional<RestaurantTable> table = restaurantTableRepository.findById(id);
         return table.map(restaurantTable1 -> new ResponseEntity<Object>(restaurantTable1, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/table/{id}/orders")
     public ResponseEntity<List<RestaurantOrder>> getOrdersForTable(@PathVariable("id") UUID id) {
         List<RestaurantOrder> restaurantOrders = new ArrayList<>();
-        orderRepository.findAll().forEach(restaurantOrders::add);
+        restaurantOrderRepository.findAll().forEach(restaurantOrders::add);
         return new ResponseEntity<>(restaurantOrders, HttpStatus.NOT_IMPLEMENTED);
     }
 }

@@ -1,8 +1,8 @@
 package com.chefgiraffe.api.services.impl;
 
-import com.chefgiraffe.api.repositories.OrderRepository;
+import com.chefgiraffe.api.repositories.RestaurantOrderRepository;
 import com.chefgiraffe.api.repositories.models.RestaurantOrder;
-import com.chefgiraffe.api.services.OrderService;
+import com.chefgiraffe.api.services.RestaurantOrderService;
 import com.chefgiraffe.api.services.models.CreatedOrder;
 import com.chefgiraffe.api.services.models.OrderStatus;
 import com.chefgiraffe.api.services.models.OrderUpdate;
@@ -22,10 +22,10 @@ import static org.junit.Assert.*;
 public class RestaurantOrderServiceImplIT {
 
     @Autowired
-    private OrderService orderService;
+    private RestaurantOrderService restaurantOrderService;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private RestaurantOrderRepository restaurantOrderRepository;
 
     @Test
     public void createOrder_OrderIsCreated() {
@@ -34,11 +34,11 @@ public class RestaurantOrderServiceImplIT {
         List<UUID> itemIds = Arrays.asList(UUID.fromString("9d725f88-3f9f-477f-af88-3a8f09dbb6fb"),
                                            UUID.fromString("544305ca-3526-47d1-9b9e-6aca1bf8cdeb"));
 
-        Optional<CreatedOrder> createdOrder = orderService.create(restaurantTableId, itemIds);
+        Optional<CreatedOrder> createdOrder = restaurantOrderService.create(restaurantTableId, itemIds);
 
         assertTrue(createdOrder.isPresent());
 
-        Optional<RestaurantOrder> savedOrder = orderRepository.findById(createdOrder.get().getOrderId());
+        Optional<RestaurantOrder> savedOrder = restaurantOrderRepository.findById(createdOrder.get().getOrderId());
 
         assertTrue(savedOrder.isPresent());
         assertEquals(restaurantTableId, savedOrder.get().getRestaurantTableId());
@@ -51,12 +51,12 @@ public class RestaurantOrderServiceImplIT {
         List<UUID> itemIds = Arrays.asList(UUID.fromString("9d725f88-3f9f-477f-af88-3a8f09dbb6fb"),
                                            UUID.fromString("544305ca-3526-47d1-9b9e-6aca1bf8cdeb"));
 
-        Optional<CreatedOrder> createdOrder = orderService.create(restaurantTableId, itemIds);
+        Optional<CreatedOrder> createdOrder = restaurantOrderService.create(restaurantTableId, itemIds);
 
         assertTrue(createdOrder.isPresent());
 
         Optional<UpdatedOrder> updatedOrder =
-                orderService.update(new OrderUpdate(createdOrder.get().getOrderId(), OrderStatus.PREPARING));
+                restaurantOrderService.update(new OrderUpdate(createdOrder.get().getOrderId(), OrderStatus.PREPARING));
 
         assertTrue(updatedOrder.isPresent());
         assertEquals(createdOrder.get().getOrderId(), updatedOrder.get().getOrderId());

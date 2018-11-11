@@ -11,22 +11,24 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class MenuItem {
+public class RestaurantMenuItem {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
+    private String restaurantMenuId;
     private String name;
     private String description;
     private BigDecimal price;
     private String imageUri;
 
-    protected MenuItem() {
+    protected RestaurantMenuItem() {
     }
 
-    public MenuItem(String name, String description, BigDecimal price, String imageUri) {
+    public RestaurantMenuItem(String restaurantMenuId, String name, String description, BigDecimal price, String imageUri) {
+        this.restaurantMenuId = restaurantMenuId;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -35,6 +37,10 @@ public class MenuItem {
 
     public UUID getId() {
         return id;
+    }
+
+    public String getRestaurantMenuId() {
+        return restaurantMenuId;
     }
 
     public String getName() {
@@ -55,8 +61,9 @@ public class MenuItem {
 
     @Override
     public String toString() {
-        return "MenuItem{" +
+        return "RestaurantMenuItem{" +
                 "id=" + id +
+                ", restaurantMenuId='" + restaurantMenuId + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +

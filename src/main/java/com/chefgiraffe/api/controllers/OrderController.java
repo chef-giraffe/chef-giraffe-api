@@ -1,7 +1,7 @@
 package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Order;
-import com.chefgiraffe.api.services.OrderService;
+import com.chefgiraffe.api.services.RestaurantOrderService;
 import com.chefgiraffe.api.services.models.CreatedOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +16,13 @@ import java.util.Optional;
 
 @RestController
 public class OrderController {
-    private OrderService orderService;
+    private RestaurantOrderService restaurantOrderService;
     @Value("${base_url}")
     private String base_url;
 
     @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
+    public OrderController(RestaurantOrderService restaurantOrderService) {
+        this.restaurantOrderService = restaurantOrderService;
     }
 
     @GetMapping("/order/{id}")
@@ -37,7 +37,7 @@ public class OrderController {
 
     @PostMapping("/order")
     public ResponseEntity<Object> createId(@RequestBody Order order) {
-        Optional<CreatedOrder> createdOrder = orderService.create(order.getTableId(), order.getOrderItems());
+        Optional<CreatedOrder> createdOrder = restaurantOrderService.create(order.getTableId(), order.getOrderItems());
 
         if (createdOrder.isPresent()) {
             UriComponents builder = UriComponentsBuilder.fromUriString(base_url)

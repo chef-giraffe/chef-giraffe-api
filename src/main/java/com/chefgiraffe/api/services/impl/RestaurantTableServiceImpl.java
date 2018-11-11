@@ -1,7 +1,7 @@
 package com.chefgiraffe.api.services.impl;
 
 import com.chefgiraffe.api.repositories.RestaurantRepository;
-import com.chefgiraffe.api.repositories.TableRepository;
+import com.chefgiraffe.api.repositories.RestaurantTableRepository;
 import com.chefgiraffe.api.repositories.models.Restaurant;
 import com.chefgiraffe.api.repositories.models.RestaurantTable;
 import com.chefgiraffe.api.services.RestaurantTableService;
@@ -21,12 +21,12 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     private static Logger logger = LoggerFactory.getLogger(RestaurantTableServiceImpl.class);
 
     private final RestaurantRepository restaurantRepository;
-    private final TableRepository tableRepository;
+    private final RestaurantTableRepository restaurantTableRepository;
 
     @Autowired
-    public RestaurantTableServiceImpl(RestaurantRepository restaurantRepository, TableRepository tableRepository) {
+    public RestaurantTableServiceImpl(RestaurantRepository restaurantRepository, RestaurantTableRepository restaurantTableRepository) {
         this.restaurantRepository = restaurantRepository;
-        this.tableRepository = tableRepository;
+        this.restaurantTableRepository = restaurantTableRepository;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
 
             logger.debug("creating new table for restaurant {}", restaurantId.toString());
             RestaurantTable newTable =
-                    tableRepository.save(new RestaurantTable(restaurantId, friendlyName, availableSeats));
+                    restaurantTableRepository.save(new RestaurantTable(restaurantId, friendlyName, availableSeats));
 
             logger.info("created new table {} for restaurant {}", newTable.getId().toString(),
                     newTable.getRestaurantId().toString());

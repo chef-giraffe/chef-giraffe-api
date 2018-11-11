@@ -24,22 +24,22 @@ public class RestaurantOrder {
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "restaurant_order_item",
                 joinColumns = @JoinColumn(name = "restaurant_order_id", referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name = "menu_item_id", referencedColumnName = "id"))
-    private List<MenuItem> menuItems;
+                inverseJoinColumns = @JoinColumn(name = "restaurant_menu_item_id", referencedColumnName = "id"))
+    private List<RestaurantMenuItem> restaurantMenuItems;
 
     protected RestaurantOrder() {
     }
 
     public RestaurantOrder(UUID restaurantTableId, String orderStatus) {
         this.restaurantTableId = restaurantTableId;
-        this.menuItems = new ArrayList<>();
+        this.restaurantMenuItems = new ArrayList<>();
         this.orderStatus = orderStatus;
     }
 
-    public RestaurantOrder(UUID restaurantTableId, String orderStatus, List<MenuItem> menuItems) {
+    public RestaurantOrder(UUID restaurantTableId, String orderStatus, List<RestaurantMenuItem> restaurantMenuItems) {
         this.restaurantTableId = restaurantTableId;
         this.orderStatus = orderStatus;
-        this.menuItems = menuItems;
+        this.restaurantMenuItems = restaurantMenuItems;
     }
 
     public UUID getId() {
@@ -50,16 +50,16 @@ public class RestaurantOrder {
         return restaurantTableId;
     }
 
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
+    public List<RestaurantMenuItem> getRestaurantMenuItems() {
+        return restaurantMenuItems;
     }
 
     public String getOrderStatus() {
         return orderStatus;
     }
 
-    public boolean addItem(MenuItem menuItem) {
-        return this.menuItems.add(menuItem);
+    public boolean addItem(RestaurantMenuItem restaurantMenuItem) {
+        return this.restaurantMenuItems.add(restaurantMenuItem);
     }
 
     public void updateStatus(String newStatus) {
@@ -70,8 +70,9 @@ public class RestaurantOrder {
     public String toString() {
         return "RestaurantOrder{" +
                 "id=" + id +
-                ", menuItems=" + menuItems +
-                ", orderStatus=" + orderStatus +
+                ", restaurantTableId=" + restaurantTableId +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", restaurantMenuItems=" + restaurantMenuItems +
                 '}';
     }
 }

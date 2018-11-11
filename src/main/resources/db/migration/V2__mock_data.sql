@@ -18,7 +18,7 @@ values ('2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','a5eea915-128e-40b0-963c-e6116475
        ('19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','a5eea915-128e-40b0-963c-e61164750511','Darnell''s Crispy Entrees'),
        ('459fe504-3f39-42f5-8590-79c975c28c93','a5eea915-128e-40b0-963c-e61164750511','Darnell''s Provocative Desserts');
 
-insert into menu_item(id, restaurant_menu_id, name, description, price, image_uri)
+insert into restaurant_menu_item(id, restaurant_menu_id, name, description, price, image_uri)
 values ('9d725f88-3f9f-477f-af88-3a8f09dbb6fb','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Beer Nachos','',4.99,null),
        ('f97d5635-c1b3-420b-8178-3102dad63ccd','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Ballin Quesodillas','',6.95,null),
        ('75381cac-06ce-4d80-a26a-4ba62158b989','2ea2f2c9-bfc3-4ec3-b568-82c21130fc10','Hottest Damn Wings','',5.99,null),
