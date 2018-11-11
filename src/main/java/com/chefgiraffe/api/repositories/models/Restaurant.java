@@ -2,10 +2,9 @@ package com.chefgiraffe.api.repositories.models;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,11 +18,16 @@ public class Restaurant {
 
     private String name;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "restaurant_id")
+    private List<RestaurantMenu> menus;
+
     protected Restaurant() {
     }
 
     public Restaurant(String name) {
         this.name = name;
+        this.menus = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -34,11 +38,16 @@ public class Restaurant {
         return name;
     }
 
+    public List<RestaurantMenu> getMenus() {
+        return menus;
+    }
+
     @Override
     public String toString() {
         return "Restaurant{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", menus=" + menus +
                 '}';
     }
 }

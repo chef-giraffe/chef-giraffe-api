@@ -2,10 +2,7 @@ package com.chefgiraffe.api.repositories.models;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +14,7 @@ public class RestaurantMenu {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
+    @Column(name = "restaurant_id")
     private UUID restaurantId;
     private String name;
 
