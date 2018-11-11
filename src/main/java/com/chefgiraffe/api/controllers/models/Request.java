@@ -1,22 +1,14 @@
 package com.chefgiraffe.api.controllers.models;
 
-import java.util.UUID;
-
 public class Request {
 
-    private UUID restaurantTableId;
     private String description;
 
     public Request() {
     }
 
-    public Request(UUID restaurantTableId, String description) {
-        this.restaurantTableId = restaurantTableId;
+    public Request(String description) {
         this.description = description;
-    }
-
-    public UUID getRestaurantTableId() {
-        return restaurantTableId;
     }
 
     public String getDescription() {
@@ -26,8 +18,7 @@ public class Request {
     @Override
     public String toString() {
         return "Request{" +
-                "restaurantTableId=" + restaurantTableId +
-                ", description='" + description + '\'' +
+                "description='" + description + '\'' +
                 '}';
     }
 }

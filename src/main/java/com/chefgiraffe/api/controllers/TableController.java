@@ -96,11 +96,10 @@ public class TableController {
     }
 
     @PostMapping("/tables/{id}/requests")
-    public ResponseEntity<?> createTableRequest(@RequestBody Request request) {
+    public ResponseEntity<?> createTableRequest(@PathVariable("id") UUID id, @RequestBody Request request) {
 
         Optional<CreatedRequest> tableRequest =
-                restaurantTableService.createTableRequest(new RequestCreate(request.getRestaurantTableId(),
-                                                                            request.getDescription()));
+                restaurantTableService.createTableRequest(new RequestCreate(id, request.getDescription()));
         if (tableRequest.isPresent()) {
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(baseUrl)
                     .pathSegment("tables", "{id}", "requests", "{requestId}")
