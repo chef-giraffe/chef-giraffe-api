@@ -5,47 +5,47 @@ import java.util.UUID;
 
 public class ItemDetails extends Item {
 
-    private String itemName;
-    private String itemDescription;
-    private BigDecimal itemPrice;
-    private String itemImageUri;
+    private String name;
+    private String description;
+    private BigDecimal price;
+    private String imageUri;
 
     public ItemDetails(UUID itemId,
                        UUID restaurantMenuId,
-                       String itemName,
-                       String itemDescription,
-                       BigDecimal itemPrice,
-                       String itemImageUri) {
+                       String name,
+                       String description,
+                       BigDecimal price,
+                       String imageUri) {
         super(itemId, restaurantMenuId);
-        this.itemName = itemName;
-        this.itemDescription = itemDescription;
-        this.itemPrice = itemPrice;
-        this.itemImageUri = itemImageUri;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imageUri = imageUri;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getName() {
+        return name;
     }
 
-    public String getItemDescription() {
-        return itemDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public BigDecimal getItemPrice() {
-        return itemPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public String getItemImageUri() {
-        return itemImageUri;
+    public String getImageUri() {
+        return imageUri;
     }
 
     @Override
     public String toString() {
         return "ItemDetails{" +
-                "itemName='" + itemName + '\'' +
-                ", itemDescription='" + itemDescription + '\'' +
-                ", itemPrice=" + itemPrice +
-                ", itemImageUri='" + itemImageUri + '\'' +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", imageUri='" + imageUri + '\'' +
                 "} " + super.toString();
     }
 }

@@ -81,12 +81,13 @@ public class RestaurantController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    @GetMapping("/restaurants/{id}/requests/{requestId}")
-    public ResponseEntity<?> readOneRestaurantRequest(@PathVariable("id") String id,
-                                                      @PathVariable("requestId") String requestId) {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-    }
+//
+//    @GetMapping("/restaurants/{id}/requests/{requestId}")
+//    public ResponseEntity<?> readOneRestaurantRequest(@PathVariable("id") String id,
+//                                                      @PathVariable("requestId") String requestId) {
+//        restaurantService.retrieveOneRequest();
+//        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+//    }
 
     @PostMapping("/restaurants")
     public ResponseEntity<?> create(@RequestBody Restaurant restaurant) {
