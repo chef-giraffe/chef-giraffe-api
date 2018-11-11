@@ -1,12 +1,15 @@
 package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Table;
-import com.chefgiraffe.api.repositories.RestaurantOrderRepository;
-import com.chefgiraffe.api.repositories.RestaurantTableRepository;
 import com.chefgiraffe.api.repositories.models.RestaurantOrder;
 import com.chefgiraffe.api.repositories.models.RestaurantTable;
 import com.chefgiraffe.api.services.RestaurantTableService;
 import com.chefgiraffe.api.services.models.CreatedTable;
+import com.chefgiraffe.api.services.models.TableCreate;
+import com.chefgiraffe.api.services.models.TableInfo;
+import com.chefgiraffe.api.services.models.TableLookup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,50 +25,56 @@ import java.util.UUID;
 
 @RestController
 public class TableController {
-    private RestaurantTableRepository restaurantTableRepository;
-    private RestaurantOrderRepository restaurantOrderRepository;
-    private RestaurantTableService restaurantTableService;
-    @Value("${base_url}")
-    private String base_url;
 
+    private static Logger logger = LoggerFactory.getLogger(TableController.class);
+
+    private final RestaurantTableService restaurantTableService;
+    private final String baseUrl;
 
     @Autowired
-    public TableController(RestaurantTableService restaurantTableService, RestaurantTableRepository restaurantTableRepository, RestaurantOrderRepository restaurantOrderRepository) {
+    public TableController(RestaurantTableService restaurantTableService,
+                           @Value("baseUrl") String baseUrl) {
         this.restaurantTableService = restaurantTableService;
-        this.restaurantOrderRepository = restaurantOrderRepository;
-        this.restaurantTableRepository = restaurantTableRepository;
+        this.baseUrl = baseUrl;
     }
 
     @GetMapping("/tables")
-    public ResponseEntity<List<RestaurantTable>> getAllTables() {
-        List<RestaurantTable> restaurantTables = new ArrayList<>();
-        restaurantTableRepository.findAll().forEach(restaurantTables::add);
-        return new ResponseEntity<>(restaurantTables, HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<?> retrieveAll() {
+        return ResponseEntity.ok(restaurantTableService.retrieveAll());
+    }
+
+    @GetMapping("/table/{id}")
+    public ResponseEntity<?> retrieve(@PathVariable("id") String id) {
+
+        Optional<TableInfo> table = restaurantTableService.retrieve(new TableLookup(UUID.fromString(id)));
+        if (table.isPresent()) {
+
+            logger.info("found table {} in restaurant {}", table.get().getTableId().toString(),
+                    table.get().getRestaurantId().toString());
+            return ResponseEntity.ok(table.get());
+        } else {
+            logger.warn("table {} not found", id);
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/table")
-    public ResponseEntity<Object> createTable(@RequestBody Table table) {
-        Optional<CreatedTable> createdTable = restaurantTableService.create(table.getRestaurantId(), table.getFriendlyName(), table.getAvailableSeats());
+    public ResponseEntity<Object> create(@RequestBody Table table) {
+
+        Optional<CreatedTable> createdTable =
+                restaurantTableService.create(new TableCreate(table.getRestaurantId(),
+                                                              table.getFriendlyName(),
+                                                              table.getAvailableSeats()));
         if (createdTable.isPresent()) {
-            UriComponents builder = UriComponentsBuilder.fromUriString(base_url)
-                    .pathSegment("v1", "table", createdTable.get().getTableId().toString()).build(true);
+
+            UriComponents builder = UriComponentsBuilder.fromUriString(baseUrl)
+                    .pathSegment("v1", "table", "{id}")
+                    .buildAndExpand(createdTable.get().getTableId().toString());
+
             return ResponseEntity.created(builder.toUri()).build();
         } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-    }
-
-    @GetMapping("/table/{id}")
-    public ResponseEntity<Object> getTable(@PathVariable("id") UUID id) {
-        Optional<RestaurantTable> table = restaurantTableRepository.findById(id);
-        return table.map(restaurantTable1 -> new ResponseEntity<Object>(restaurantTable1, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
-    }
-
-    @GetMapping("/table/{id}/orders")
-    public ResponseEntity<List<RestaurantOrder>> getOrdersForTable(@PathVariable("id") UUID id) {
-        List<RestaurantOrder> restaurantOrders = new ArrayList<>();
-        restaurantOrderRepository.findAll().forEach(restaurantOrders::add);
-        return new ResponseEntity<>(restaurantOrders, HttpStatus.NOT_IMPLEMENTED);
     }
 }

@@ -29,3 +29,15 @@ values ('9d725f88-3f9f-477f-af88-3a8f09dbb6fb','2ea2f2c9-bfc3-4ec3-b568-82c21130
        ('cabecd42-43e6-49a2-a952-007bbae894bc','19fd1573-ed74-4b0d-bdd2-12d09ce5c0d8','Juicy Cheese Burger','',14.99,null),
        ('c7758283-d8d3-4fd8-b424-30280df28f29','459fe504-3f39-42f5-8590-79c975c28c93','Melt In Your Mouth Chocolate Cake','',8.95,null),
        ('df1b0fca-6b4c-437d-ac4d-bfa66e1adf27','459fe504-3f39-42f5-8590-79c975c28c93','Strawberry Sensation','',13.49,null);
+
+insert into restaurant_order(id, restaurant_table_id, order_status)
+values ('8d01c930-2421-4d62-94ad-2e2a64b15fbd','127e65d0-13a0-4be2-9b5a-ed0635b9c5ce','CREATED'),
+       ('c3888649-3a17-42ce-a26c-f97b7c8db13f','9ace77d1-fdc2-4272-9106-a5ce2cd96cc9','PREPARING');
+
+insert into restaurant_order_item(restaurant_order_id, restaurant_menu_item_id)
+values ('8d01c930-2421-4d62-94ad-2e2a64b15fbd','9d725f88-3f9f-477f-af88-3a8f09dbb6fb'),
+       ('8d01c930-2421-4d62-94ad-2e2a64b15fbd','75381cac-06ce-4d80-a26a-4ba62158b989'),
+       ('8d01c930-2421-4d62-94ad-2e2a64b15fbd','544305ca-3526-47d1-9b9e-6aca1bf8cdeb'),
+       ('c3888649-3a17-42ce-a26c-f97b7c8db13f','f97d5635-c1b3-420b-8178-3102dad63ccd'),
+       ('c3888649-3a17-42ce-a26c-f97b7c8db13f','f3d36f9e-814d-48d4-96ad-e40196aaf64e'),
+       ('c3888649-3a17-42ce-a26c-f97b7c8db13f','df1b0fca-6b4c-437d-ac4d-bfa66e1adf27');

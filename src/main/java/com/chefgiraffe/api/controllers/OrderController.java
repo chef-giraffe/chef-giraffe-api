@@ -32,13 +32,13 @@ public class OrderController {
         this.baseUrl = baseUrl;
     }
 
-    @GetMapping("/order")
+    @GetMapping("/orders")
     public ResponseEntity<?> readAll() {
 
         return ResponseEntity.ok(restaurantOrderService.retrieveAll());
     }
 
-    @GetMapping("/order/{id}")
+    @GetMapping("/orders/{id}")
     public ResponseEntity<?> readOne(@PathVariable("id") String id) {
 
         Optional<OrderInfo> retrieved = restaurantOrderService.retrieve(new OrderLookup(UUID.fromString(id)));
@@ -53,7 +53,7 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/order")
+    @PostMapping("/orders")
     public ResponseEntity<?> create(@RequestBody Order order) {
 
         OrderCreate orderRequest = new OrderCreate(order.getTableId(), order.getOrderItems());

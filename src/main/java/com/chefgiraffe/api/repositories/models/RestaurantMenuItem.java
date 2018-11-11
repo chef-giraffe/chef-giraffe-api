@@ -18,7 +18,7 @@ public class RestaurantMenuItem {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    private String restaurantMenuId;
+    private UUID restaurantMenuId;
     private String name;
     private String description;
     private BigDecimal price;
@@ -27,7 +27,7 @@ public class RestaurantMenuItem {
     protected RestaurantMenuItem() {
     }
 
-    public RestaurantMenuItem(String restaurantMenuId, String name, String description, BigDecimal price, String imageUri) {
+    public RestaurantMenuItem(UUID restaurantMenuId, String name, String description, BigDecimal price, String imageUri) {
         this.restaurantMenuId = restaurantMenuId;
         this.name = name;
         this.description = description;
@@ -39,7 +39,7 @@ public class RestaurantMenuItem {
         return id;
     }
 
-    public String getRestaurantMenuId() {
+    public UUID getRestaurantMenuId() {
         return restaurantMenuId;
     }
 
