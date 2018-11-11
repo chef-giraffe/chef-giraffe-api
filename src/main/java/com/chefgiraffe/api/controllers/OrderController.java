@@ -3,48 +3,74 @@ package com.chefgiraffe.api.controllers;
 import com.chefgiraffe.api.controllers.models.Order;
 import com.chefgiraffe.api.services.RestaurantOrderService;
 import com.chefgiraffe.api.services.models.CreatedOrder;
+import com.chefgiraffe.api.services.models.OrderCreate;
+import com.chefgiraffe.api.services.models.OrderInfo;
+import com.chefgiraffe.api.services.models.OrderLookup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class OrderController {
-    private RestaurantOrderService restaurantOrderService;
-    @Value("${base_url}")
-    private String base_url;
+
+    private static Logger logger = LoggerFactory.getLogger(OrderController.class);
+
+    private final RestaurantOrderService restaurantOrderService;
+    private final String baseUrl;
 
     @Autowired
-    public OrderController(RestaurantOrderService restaurantOrderService) {
+    public OrderController(RestaurantOrderService restaurantOrderService, @Value("${base_url}") String baseUrl) {
         this.restaurantOrderService = restaurantOrderService;
+        this.baseUrl = baseUrl;
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<?> readAll() {
+
+        return ResponseEntity.ok(restaurantOrderService.retrieveAll());
     }
 
     @GetMapping("/order/{id}")
-    public ResponseEntity<Order> getOrder(@PathVariable("id") String id) {
-        return null;
-    }
+    public ResponseEntity<?> readOne(@PathVariable("id") String id) {
 
-    @GetMapping("/order/active")
-    public ResponseEntity<List<Order>> activeOrders() {
-        return null;
+        Optional<OrderInfo> retrieved = restaurantOrderService.retrieve(new OrderLookup(UUID.fromString(id)));
+        if (retrieved.isPresent()) {
+
+            logger.info("found order {}", retrieved.get().getOrderId());
+            return ResponseEntity.ok(retrieved);
+        } else {
+
+            logger.warn("order {} not found", id);
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Object> createId(@RequestBody Order order) {
-        Optional<CreatedOrder> createdOrder = restaurantOrderService.create(order.getTableId(), order.getOrderItems());
+    public ResponseEntity<?> create(@RequestBody Order order) {
 
+        OrderCreate orderRequest = new OrderCreate(order.getTableId(), order.getOrderItems());
+
+        Optional<CreatedOrder> createdOrder = restaurantOrderService.create(orderRequest);
         if (createdOrder.isPresent()) {
-            UriComponents builder = UriComponentsBuilder.fromUriString(base_url)
-                    .pathSegment("v1", "order", createdOrder.get().getOrderId().toString()).build(true);
+
+            logger.info("order {} created for table {}", createdOrder.get().getOrderId(), createdOrder.get().getTableId());
+            UriComponents builder = UriComponentsBuilder.fromUriString(baseUrl)
+                    .pathSegment("v1", "order", "{id}")
+                    .buildAndExpand(createdOrder.get().getOrderId());
+
             return ResponseEntity.created(builder.toUri()).build();
         } else {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+            logger.warn("order not created for table {}", order.getTableId());
+            return ResponseEntity.badRequest().build();
         }
     }
 

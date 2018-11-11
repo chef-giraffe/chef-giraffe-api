@@ -1,14 +1,13 @@
 package com.chefgiraffe.api.services;
 
-import com.chefgiraffe.api.services.models.CreatedOrder;
-import com.chefgiraffe.api.services.models.OrderUpdate;
-import com.chefgiraffe.api.services.models.UpdatedOrder;
+import com.chefgiraffe.api.services.models.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface RestaurantOrderService {
-    Optional<CreatedOrder> create(UUID tableId, List<UUID> items);
+    List<OrderInfo> retrieveAll();
+    Optional<OrderInfo> retrieve(OrderLookup lookup);
+    Optional<CreatedOrder> create(OrderCreate create);
     Optional<UpdatedOrder> update(OrderUpdate update);
 }

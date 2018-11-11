@@ -6,18 +6,15 @@ import com.chefgiraffe.api.repositories.RestaurantTableRepository;
 import com.chefgiraffe.api.repositories.models.RestaurantOrder;
 import com.chefgiraffe.api.repositories.models.RestaurantTable;
 import com.chefgiraffe.api.services.RestaurantOrderService;
-import com.chefgiraffe.api.services.models.CreatedOrder;
-import com.chefgiraffe.api.services.models.OrderStatus;
-import com.chefgiraffe.api.services.models.OrderUpdate;
-import com.chefgiraffe.api.services.models.UpdatedOrder;
+import com.chefgiraffe.api.services.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RestaurantOrderServiceImpl implements RestaurantOrderService {
@@ -29,32 +26,61 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     private final RestaurantOrderRepository restaurantOrderRepository;
 
     @Autowired
-    public RestaurantOrderServiceImpl(RestaurantTableRepository restaurantTableRepository, RestaurantMenuItemRepository restaurantMenuItemRepository, RestaurantOrderRepository restaurantOrderRepository) {
+    public RestaurantOrderServiceImpl(RestaurantTableRepository restaurantTableRepository,
+                                      RestaurantMenuItemRepository restaurantMenuItemRepository,
+                                      RestaurantOrderRepository restaurantOrderRepository) {
         this.restaurantTableRepository = restaurantTableRepository;
         this.restaurantOrderRepository = restaurantOrderRepository;
         this.restaurantMenuItemRepository = restaurantMenuItemRepository;
     }
 
     @Override
-    public Optional<CreatedOrder> create(UUID tableId, List<UUID> items) {
+    public List<OrderInfo> retrieveAll() {
 
-        Optional<RestaurantTable> table = restaurantTableRepository.findById(tableId);
+        List<OrderInfo> orders = new ArrayList<>();
+        restaurantOrderRepository.findAll().forEach(restaurantOrder ->
+                orders.add(new OrderInfo(restaurantOrder.getId(),
+                                         restaurantOrder.getRestaurantTableId(),
+                                         restaurantOrder.getOrderStatus())));
+
+        return orders;
+    }
+
+    @Override
+    public Optional<OrderInfo> retrieve(OrderLookup lookup) {
+
+        Optional<RestaurantOrder> order = restaurantOrderRepository.findById(lookup.getOrderId());
+        if (order.isPresent()) {
+            logger.info("found order {} for lookup", order.get().getId());
+            return Optional.of(new OrderInfo(order.get().getId(),
+                                             order.get().getRestaurantTableId(),
+                                             order.get().getOrderStatus()));
+        } else {
+            logger.warn("order {} not found", lookup.getOrderId());
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<CreatedOrder> create(OrderCreate create) {
+
+        Optional<RestaurantTable> table = restaurantTableRepository.findById(create.getRestaurantTableId());
         if (table.isPresent()) {
 
-            logger.debug("table {} found - creating new order", table.get().getId().toString());
+            logger.debug("creating new order for table {}", table.get().getId().toString());
             RestaurantOrder newRestaurantOrder =
                     new RestaurantOrder(table.get().getId(), OrderStatus.CREATED.toString());
 
-            restaurantMenuItemRepository.findAllById(items).forEach(newRestaurantOrder::addItem);
+            restaurantMenuItemRepository.findAllById(create.getRestaurantMenuItemIds()).forEach(newRestaurantOrder::addItem);
 
-            logger.info("saving new order for table {}", tableId.toString());
+            logger.info("saving new order for table {}", newRestaurantOrder.getRestaurantTableId().toString());
             RestaurantOrder savedRestaurantOrder = restaurantOrderRepository.save(newRestaurantOrder);
 
             return Optional.of(new CreatedOrder(savedRestaurantOrder.getId(),
                                                 savedRestaurantOrder.getRestaurantTableId(),
                                                 savedRestaurantOrder.getRestaurantMenuItems().size()));
         } else {
-            logger.warn("table {} not found", tableId.toString());
+            logger.warn("table {} not found", create.getRestaurantTableId().toString());
             return Optional.empty();
         }
     }
@@ -71,6 +97,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
             existingOrder.updateStatus(update.getUpdateStatus().toString());
 
+            logger.info("updating order {}", existingOrder.getId().toString());
             RestaurantOrder savedUpdatedOrder = restaurantOrderRepository.save(existingOrder);
 
             return Optional.of(new UpdatedOrder(savedUpdatedOrder.getId(),
