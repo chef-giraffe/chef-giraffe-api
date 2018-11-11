@@ -3,10 +3,7 @@ package com.chefgiraffe.api.services.impl;
 import com.chefgiraffe.api.repositories.RestaurantRepository;
 import com.chefgiraffe.api.repositories.models.Restaurant;
 import com.chefgiraffe.api.services.RestaurantService;
-import com.chefgiraffe.api.services.models.CreatedRestaurant;
-import com.chefgiraffe.api.services.models.RestaurantCreate;
-import com.chefgiraffe.api.services.models.RestaurantInfo;
-import com.chefgiraffe.api.services.models.RestaurantLookup;
+import com.chefgiraffe.api.services.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
@@ -55,6 +53,40 @@ public class RestaurantServiceImpl implements RestaurantService {
                                                   restaurant.get().getMenus().size()));
         } else {
             logger.warn("restaurant {} not found", lookup.getRestaurantId().toString());
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<RestaurantMenuDetails> retrieveMenuDetails(RestaurantLookup lookup) {
+
+        Optional<Restaurant> restaurant = restaurantRepository.findById(lookup.getRestaurantId());
+        if (restaurant.isPresent()) {
+
+            logger.info("restaurant {} was found", lookup.getRestaurantId().toString());
+
+            RestaurantMenuDetails menuDetails =
+                    new RestaurantMenuDetails(restaurant.get().getId(),
+                                              restaurant.get().getName(),
+                                              restaurant.get().getMenus().stream()
+                                                      .map(restaurantMenu ->
+                                                              new MenuDetails(restaurantMenu.getId(),
+                                                                              restaurantMenu.getRestaurantId(),
+                                                                              restaurantMenu.getName(),
+                                                                              restaurantMenu.getRestaurantMenuItems().stream()
+                                                                                .map(restaurantMenuItem ->
+                                                                                        new ItemDetails(restaurantMenuItem.getId(),
+                                                                                                        restaurantMenuItem.getRestaurantMenuId(),
+                                                                                                        restaurantMenuItem.getName(),
+                                                                                                        restaurantMenuItem.getDescription(),
+                                                                                                        restaurantMenuItem.getPrice(),
+                                                                                                        restaurantMenuItem.getImageUri()))
+                                                                                .collect(Collectors.toList())))
+                                                      .collect(Collectors.toList()));
+
+            return Optional.of(menuDetails);
+        } else {
+            logger.warn("restaurant {} was not found", lookup.getRestaurantId().toString());
             return Optional.empty();
         }
     }

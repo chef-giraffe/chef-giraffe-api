@@ -3,6 +3,8 @@ package com.chefgiraffe.api.repositories.models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,12 +20,17 @@ public class RestaurantMenu {
     private UUID restaurantId;
     private String name;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "restaurant_menu_id")
+    private List<RestaurantMenuItem> restaurantMenuItems;
+
     public RestaurantMenu() {
     }
 
     public RestaurantMenu(UUID restaurantId, String name) {
         this.restaurantId = restaurantId;
         this.name = name;
+        this.restaurantMenuItems = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -38,12 +45,21 @@ public class RestaurantMenu {
         return name;
     }
 
+    public List<RestaurantMenuItem> getRestaurantMenuItems() {
+        return restaurantMenuItems;
+    }
+
+    public boolean addRestaurantMenuItem(RestaurantMenuItem restaurantMenuItem) {
+        return this.restaurantMenuItems.add(restaurantMenuItem);
+    }
+
     @Override
     public String toString() {
         return "RestaurantMenu{" +
                 "id=" + id +
                 ", restaurantId=" + restaurantId +
                 ", name='" + name + '\'' +
+                ", restaurantMenuItems=" + restaurantMenuItems +
                 '}';
     }
 }

@@ -2,10 +2,7 @@ package com.chefgiraffe.api.controllers;
 
 import com.chefgiraffe.api.controllers.models.Restaurant;
 import com.chefgiraffe.api.services.RestaurantService;
-import com.chefgiraffe.api.services.models.CreatedRestaurant;
-import com.chefgiraffe.api.services.models.RestaurantCreate;
-import com.chefgiraffe.api.services.models.RestaurantInfo;
-import com.chefgiraffe.api.services.models.RestaurantLookup;
+import com.chefgiraffe.api.services.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +45,20 @@ public class RestaurantController {
             return ResponseEntity.ok(restaurant.get());
         } else {
             logger.warn("restaurant {} was not found", id);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/restaurants/{id}/menus")
+    public ResponseEntity<?> readRestaurantMenus(@PathVariable("id") UUID id) {
+
+        Optional<RestaurantMenuDetails> menuDetails = restaurantService.retrieveMenuDetails(new RestaurantLookup(id));
+        if (menuDetails.isPresent()) {
+
+            logger.info("menu {} was found", menuDetails.get().getId());
+            return ResponseEntity.ok(menuDetails.get());
+        } else {
+            logger.warn("menu {} was not found", id.toString());
             return ResponseEntity.notFound().build();
         }
     }
