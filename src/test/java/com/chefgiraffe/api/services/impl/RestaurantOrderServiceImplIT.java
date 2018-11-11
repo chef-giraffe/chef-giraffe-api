@@ -36,7 +36,7 @@ public class RestaurantOrderServiceImplIT {
 
         assertTrue(createdOrder.isPresent());
 
-        Optional<RestaurantOrder> savedOrder = restaurantOrderRepository.findById(createdOrder.get().getOrderId());
+        Optional<RestaurantOrder> savedOrder = restaurantOrderRepository.findById(createdOrder.get().getId());
 
         assertTrue(savedOrder.isPresent());
         assertEquals(restaurantTableId, savedOrder.get().getRestaurantTableId());
@@ -55,10 +55,10 @@ public class RestaurantOrderServiceImplIT {
         assertTrue(createdOrder.isPresent());
 
         Optional<UpdatedOrder> updatedOrder =
-                restaurantOrderService.update(new OrderUpdate(createdOrder.get().getOrderId(), OrderStatus.PREPARING));
+                restaurantOrderService.update(new OrderUpdate(createdOrder.get().getId(), OrderStatus.PREPARING));
 
         assertTrue(updatedOrder.isPresent());
-        assertEquals(createdOrder.get().getOrderId(), updatedOrder.get().getOrderId());
+        assertEquals(createdOrder.get().getId(), updatedOrder.get().getId());
         assertEquals(OrderStatus.PREPARING, updatedOrder.get().getNewStatus());
     }
 }

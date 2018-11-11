@@ -4,16 +4,16 @@ import java.util.UUID;
 
 public class Item {
 
-    private UUID itemId;
+    private UUID id;
     private UUID restaurantMenuId;
 
-    public Item(UUID itemId, UUID restaurantMenuId) {
-        this.itemId = itemId;
+    public Item(UUID id, UUID restaurantMenuId) {
+        this.id = id;
         this.restaurantMenuId = restaurantMenuId;
     }
 
-    public UUID getItemId() {
-        return itemId;
+    public UUID getId() {
+        return id;
     }
 
     public UUID getRestaurantMenuId() {
@@ -23,7 +23,7 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" +
-                "itemId=" + itemId +
+                "id=" + id +
                 ", restaurantMenuId=" + restaurantMenuId +
                 '}';
     }

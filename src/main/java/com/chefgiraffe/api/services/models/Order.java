@@ -4,16 +4,16 @@ import java.util.UUID;
 
 public class Order {
 
-    private UUID orderId;
+    private UUID id;
     private UUID tableId;
 
-    Order(UUID orderId, UUID tableId) {
-        this.orderId = orderId;
+    Order(UUID id, UUID tableId) {
+        this.id = id;
         this.tableId = tableId;
     }
 
-    public UUID getOrderId() {
-        return orderId;
+    public UUID getId() {
+        return id;
     }
 
     public UUID getTableId() {

@@ -4,16 +4,16 @@ import java.util.UUID;
 
 public class Table {
 
-    private UUID restaurantTableId;
+    private UUID id;
     private UUID restaurantId;
 
-    public Table(UUID restaurantTableId, UUID restaurantId) {
-        this.restaurantTableId = restaurantTableId;
+    public Table(UUID id, UUID restaurantId) {
+        this.id = id;
         this.restaurantId = restaurantId;
     }
 
-    public UUID getRestaurantTableId() {
-        return restaurantTableId;
+    public UUID getId() {
+        return id;
     }
 
     public UUID getRestaurantId() {

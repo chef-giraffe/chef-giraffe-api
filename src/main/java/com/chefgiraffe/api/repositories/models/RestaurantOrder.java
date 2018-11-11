@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class RestaurantOrder {
     private UUID restaurantTableId;
 
     private String orderStatus;
+    private Timestamp createdTime;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "restaurant_order_item",
@@ -30,15 +32,17 @@ public class RestaurantOrder {
     protected RestaurantOrder() {
     }
 
-    public RestaurantOrder(UUID restaurantTableId, String orderStatus) {
+    public RestaurantOrder(UUID restaurantTableId, String orderStatus, Timestamp createdTime) {
         this.restaurantTableId = restaurantTableId;
+        this.createdTime = createdTime;
         this.restaurantMenuItems = new ArrayList<>();
         this.orderStatus = orderStatus;
     }
 
-    public RestaurantOrder(UUID restaurantTableId, String orderStatus, List<RestaurantMenuItem> restaurantMenuItems) {
+    public RestaurantOrder(UUID restaurantTableId, String orderStatus, Timestamp createdTime, List<RestaurantMenuItem> restaurantMenuItems) {
         this.restaurantTableId = restaurantTableId;
         this.orderStatus = orderStatus;
+        this.createdTime = createdTime;
         this.restaurantMenuItems = restaurantMenuItems;
     }
 
@@ -58,6 +62,10 @@ public class RestaurantOrder {
         return orderStatus;
     }
 
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
     public boolean addItem(RestaurantMenuItem restaurantMenuItem) {
         return this.restaurantMenuItems.add(restaurantMenuItem);
     }
@@ -72,6 +80,7 @@ public class RestaurantOrder {
                 "id=" + id +
                 ", restaurantTableId=" + restaurantTableId +
                 ", orderStatus='" + orderStatus + '\'' +
+                ", createdTime=" + createdTime +
                 ", restaurantMenuItems=" + restaurantMenuItems +
                 '}';
     }

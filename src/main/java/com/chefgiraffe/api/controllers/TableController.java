@@ -45,7 +45,7 @@ public class TableController {
         Optional<TableInfo> table = restaurantTableService.retrieve(new TableLookup(UUID.fromString(id)));
         if (table.isPresent()) {
 
-            logger.info("found table {} in restaurant {}", table.get().getRestaurantTableId().toString(),
+            logger.info("found table {} in restaurant {}", table.get().getId().toString(),
                     table.get().getRestaurantId().toString());
             return ResponseEntity.ok(table.get());
         } else {
@@ -65,7 +65,7 @@ public class TableController {
 
             UriComponents builder = UriComponentsBuilder.fromUriString(baseUrl)
                     .pathSegment("v1", "table", "{id}")
-                    .buildAndExpand(createdTable.get().getRestaurantTableId().toString());
+                    .buildAndExpand(createdTable.get().getId().toString());
 
             return ResponseEntity.created(builder.toUri()).build();
         } else {

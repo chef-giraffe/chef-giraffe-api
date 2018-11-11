@@ -30,9 +30,9 @@ values ('9d725f88-3f9f-477f-af88-3a8f09dbb6fb','2ea2f2c9-bfc3-4ec3-b568-82c21130
        ('c7758283-d8d3-4fd8-b424-30280df28f29','459fe504-3f39-42f5-8590-79c975c28c93','Melt In Your Mouth Chocolate Cake','',8.95,null),
        ('df1b0fca-6b4c-437d-ac4d-bfa66e1adf27','459fe504-3f39-42f5-8590-79c975c28c93','Strawberry Sensation','',13.49,null);
 
-insert into restaurant_order(id, restaurant_table_id, order_status)
-values ('8d01c930-2421-4d62-94ad-2e2a64b15fbd','127e65d0-13a0-4be2-9b5a-ed0635b9c5ce','CREATED'),
-       ('c3888649-3a17-42ce-a26c-f97b7c8db13f','9ace77d1-fdc2-4272-9106-a5ce2cd96cc9','PREPARING');
+insert into restaurant_order(id, restaurant_table_id, order_status, created_time)
+values ('8d01c930-2421-4d62-94ad-2e2a64b15fbd','127e65d0-13a0-4be2-9b5a-ed0635b9c5ce','CREATED','2018-11-11'),
+       ('c3888649-3a17-42ce-a26c-f97b7c8db13f','9ace77d1-fdc2-4272-9106-a5ce2cd96cc9','PREPARING','2018-11-11');
 
 insert into restaurant_order_item(restaurant_order_id, restaurant_menu_item_id)
 values ('8d01c930-2421-4d62-94ad-2e2a64b15fbd','9d725f88-3f9f-477f-af88-3a8f09dbb6fb'),

@@ -41,7 +41,7 @@ public class OrderController {
         Optional<OrderInfo> retrieved = restaurantOrderService.retrieve(new OrderLookup(UUID.fromString(id)));
         if (retrieved.isPresent()) {
 
-            logger.info("found order {}", retrieved.get().getOrderId());
+            logger.info("found order {}", retrieved.get().getId());
             return ResponseEntity.ok(retrieved);
         } else {
 
@@ -57,7 +57,7 @@ public class OrderController {
                 restaurantOrderService.retrieveDetails(new OrderLookup(UUID.fromString(id)));
         if (orderDetails.isPresent()) {
 
-            logger.info("found details for order {}", orderDetails.get().getOrderId());
+            logger.info("found details for order {}", orderDetails.get().getId());
             return ResponseEntity.ok(orderDetails.get());
         } else {
 
@@ -74,10 +74,10 @@ public class OrderController {
         Optional<CreatedOrder> createdOrder = restaurantOrderService.create(orderRequest);
         if (createdOrder.isPresent()) {
 
-            logger.info("order {} created for table {}", createdOrder.get().getOrderId(), createdOrder.get().getTableId());
+            logger.info("order {} created for table {}", createdOrder.get().getId(), createdOrder.get().getTableId());
             UriComponents builder = UriComponentsBuilder.fromUriString(baseUrl)
                     .pathSegment("v1", "order", "{id}")
-                    .buildAndExpand(createdOrder.get().getOrderId());
+                    .buildAndExpand(createdOrder.get().getId());
 
             return ResponseEntity.created(builder.toUri()).build();
         } else {

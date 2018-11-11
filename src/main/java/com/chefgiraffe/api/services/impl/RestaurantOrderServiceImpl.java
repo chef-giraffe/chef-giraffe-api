@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +44,8 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         restaurantOrderRepository.findAll().forEach(restaurantOrder ->
                 orders.add(new OrderInfo(restaurantOrder.getId(),
                                          restaurantOrder.getRestaurantTableId(),
-                                         restaurantOrder.getOrderStatus())));
+                                         restaurantOrder.getOrderStatus(),
+                                         restaurantOrder.getCreatedTime().toLocalDateTime())));
 
         return orders;
     }
@@ -56,7 +59,8 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
             logger.info("found order {} for lookup", order.get().getId());
             return Optional.of(new OrderInfo(order.get().getId(),
                                              order.get().getRestaurantTableId(),
-                                             order.get().getOrderStatus()));
+                                             order.get().getOrderStatus(),
+                                             order.get().getCreatedTime().toLocalDateTime()));
         } else {
             logger.warn("order {} not found", lookup.getOrderId());
             return Optional.empty();
@@ -97,9 +101,12 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
             logger.debug("creating new order for table {}", table.get().getId().toString());
             RestaurantOrder newRestaurantOrder =
-                    new RestaurantOrder(table.get().getId(), OrderStatus.CREATED.toString());
+                    new RestaurantOrder(table.get().getId(),
+                                        OrderStatus.CREATED.toString(),
+                                        Timestamp.valueOf(LocalDateTime.now()));
 
-            restaurantMenuItemRepository.findAllById(create.getRestaurantMenuItemIds()).forEach(newRestaurantOrder::addItem);
+            restaurantMenuItemRepository.findAllById(create.getRestaurantMenuItemIds())
+                    .forEach(newRestaurantOrder::addItem);
 
             logger.info("saving new order for table {}", newRestaurantOrder.getRestaurantTableId().toString());
             RestaurantOrder savedRestaurantOrder = restaurantOrderRepository.save(newRestaurantOrder);
