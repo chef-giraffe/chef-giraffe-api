@@ -1,4 +1,4 @@
-package com.chefgiraffe.api.repositories.models;
+package com.chefgiraffe.api.services.models;
 
 public enum OrderStatus {
     CREATED,

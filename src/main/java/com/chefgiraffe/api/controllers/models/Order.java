@@ -7,6 +7,14 @@ public class Order {
     private UUID tableId;
     private List<UUID> orderItems;
 
+    public Order() {
+    }
+
+    public Order(UUID tableId, List<UUID> orderItems) {
+        this.tableId = tableId;
+        this.orderItems = orderItems;
+    }
+
     public UUID getTableId() {
         return tableId;
     }

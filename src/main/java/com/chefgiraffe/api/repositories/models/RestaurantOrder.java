@@ -19,8 +19,7 @@ public class RestaurantOrder {
 
     private UUID restaurantTableId;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "restaurant_order_item",
@@ -31,13 +30,13 @@ public class RestaurantOrder {
     protected RestaurantOrder() {
     }
 
-    public RestaurantOrder(UUID restaurantTableId, OrderStatus orderStatus) {
+    public RestaurantOrder(UUID restaurantTableId, String orderStatus) {
         this.restaurantTableId = restaurantTableId;
         this.menuItems = new ArrayList<>();
         this.orderStatus = orderStatus;
     }
 
-    public RestaurantOrder(UUID restaurantTableId, OrderStatus orderStatus, List<MenuItem> menuItems) {
+    public RestaurantOrder(UUID restaurantTableId, String orderStatus, List<MenuItem> menuItems) {
         this.restaurantTableId = restaurantTableId;
         this.orderStatus = orderStatus;
         this.menuItems = menuItems;
@@ -55,12 +54,16 @@ public class RestaurantOrder {
         return menuItems;
     }
 
-    public OrderStatus getOrderStatus() {
+    public String getOrderStatus() {
         return orderStatus;
     }
 
     public boolean addItem(MenuItem menuItem) {
         return this.menuItems.add(menuItem);
+    }
+
+    public void updateStatus(String newStatus) {
+        this.orderStatus = newStatus;
     }
 
     @Override

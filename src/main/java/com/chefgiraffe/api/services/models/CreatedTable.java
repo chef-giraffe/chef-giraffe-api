@@ -1,4 +1,10 @@
 package com.chefgiraffe.api.services.models;
 
-public class CreatedTable {
+import java.util.UUID;
+
+public class CreatedTable extends Table {
+
+    public CreatedTable(UUID tableId, UUID restaurantId) {
+        super(tableId, restaurantId);
+    }
 }
