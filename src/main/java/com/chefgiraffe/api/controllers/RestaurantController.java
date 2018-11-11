@@ -32,9 +32,9 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants/{id}")
-    public ResponseEntity<?> readOne(@PathVariable("id") String id) {
+    public ResponseEntity<?> readOne(@PathVariable("id") UUID id) {
 
-        Optional<RestaurantInfo> restaurant = restaurantService.retrieveOne(new RestaurantLookup(UUID.fromString(id)));
+        Optional<RestaurantInfo> restaurant = restaurantService.retrieveOne(new RestaurantLookup(id));
         if (restaurant.isPresent()) {
 
             logger.info("restaurant {} was found", restaurant.get().getId().toString());

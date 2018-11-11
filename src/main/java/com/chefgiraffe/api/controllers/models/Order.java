@@ -20,16 +20,8 @@ public class Order {
         return tableId;
     }
 
-    public void setTableId(UUID tableId) {
-        this.tableId = tableId;
-    }
-
     public List<UUID> getOrderItems() {
         return orderItems;
-    }
-
-    public void setOrderItems(List<UUID> orderItems) {
-        this.orderItems = orderItems;
     }
 
     @Override

@@ -21,24 +21,12 @@ public class Table {
         return restaurantId;
     }
 
-    public void setRestaurantId(UUID restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-
     public String getFriendlyName() {
         return friendlyName;
     }
 
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-    }
-
     public Integer getAvailableSeats() {
         return availableSeats;
-    }
-
-    public void setAvailableSeats(Integer availableSeats) {
-        this.availableSeats = availableSeats;
     }
 
     @Override

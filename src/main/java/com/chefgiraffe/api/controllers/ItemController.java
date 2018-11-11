@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.rmi.server.UID;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -35,9 +36,9 @@ public class ItemController {
     }
 
     @GetMapping("/items/{id}")
-    public ResponseEntity<?> readOne(@PathVariable("id") String id) {
+    public ResponseEntity<?> readOne(@PathVariable("id") UUID id) {
 
-        Optional<RestaurantMenuItem> menuItem = restaurantItemService.retrieve(new ItemLookup(UUID.fromString(id)));
+        Optional<RestaurantMenuItem> menuItem = restaurantItemService.retrieve(new ItemLookup(id));
         if (menuItem.isPresent()) {
 
             logger.info("found item {}", menuItem.get().getId());

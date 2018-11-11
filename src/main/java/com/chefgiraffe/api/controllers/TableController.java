@@ -37,9 +37,9 @@ public class TableController {
     }
 
     @GetMapping("/tables/{id}")
-    public ResponseEntity<?> retrieve(@PathVariable("id") String id) {
+    public ResponseEntity<?> retrieve(@PathVariable("id") UUID id) {
 
-        Optional<TableInfo> table = restaurantTableService.retrieve(new TableLookup(UUID.fromString(id)));
+        Optional<TableInfo> table = restaurantTableService.retrieve(new TableLookup(id));
         if (table.isPresent()) {
 
             logger.info("found table {} in restaurant {}", table.get().getId().toString(),
@@ -52,10 +52,10 @@ public class TableController {
     }
 
     @GetMapping("/tables/{id}/orders")
-    public ResponseEntity<?> readOrders(@PathVariable("id") String id) {
+    public ResponseEntity<?> readOrders(@PathVariable("id") UUID id) {
 
         Optional<TableOrderDetails> orderDetails =
-                restaurantTableService.retrieveAllOrders(new TableLookup(UUID.fromString(id)));
+                restaurantTableService.retrieveAllOrders(new TableLookup(id));
         if (orderDetails.isPresent()) {
 
             logger.info("found order details for table {}", orderDetails.get().getId());
@@ -67,11 +67,10 @@ public class TableController {
     }
 
     @GetMapping("/tables/{id}/orders/preparing")
-    public ResponseEntity<?> readPreparingOrders(@PathVariable("id") String id) {
+    public ResponseEntity<?> readPreparingOrders(@PathVariable("id") UUID id) {
 
         Optional<TableOrderDetails> orderDetails =
-                restaurantTableService.retrieveSpecificOrders(new TableLookup(UUID.fromString(id),
-                                                                              OrderStatus.PREPARING));
+                restaurantTableService.retrieveSpecificOrders(new TableLookup(id, OrderStatus.PREPARING));
         if (orderDetails.isPresent()) {
 
             logger.info("found preparing order details for table {}", orderDetails.get().getId());

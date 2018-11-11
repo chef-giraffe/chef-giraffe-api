@@ -36,9 +36,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    public ResponseEntity<?> readOne(@PathVariable("id") String id) {
+    public ResponseEntity<?> readOne(@PathVariable("id") UUID id) {
 
-        Optional<OrderInfo> retrieved = restaurantOrderService.retrieve(new OrderLookup(UUID.fromString(id)));
+        Optional<OrderInfo> retrieved = restaurantOrderService.retrieve(new OrderLookup(id));
         if (retrieved.isPresent()) {
 
             logger.info("found order {}", retrieved.get().getId());
@@ -51,10 +51,10 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}/items")
-    public ResponseEntity<?> readItems(@PathVariable("id") String id) {
+    public ResponseEntity<?> readItems(@PathVariable("id") UUID id) {
 
         Optional<OrderDetails> orderDetails =
-                restaurantOrderService.retrieveDetails(new OrderLookup(UUID.fromString(id)));
+                restaurantOrderService.retrieveDetails(new OrderLookup(id));
         if (orderDetails.isPresent()) {
 
             logger.info("found details for order {}", orderDetails.get().getId());
